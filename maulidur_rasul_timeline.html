@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Life of the Messenger ﷺ — A Maulidur Rasul Timeline</title>
+<meta name="description" content="An interactive, bilingual timeline of Prophet Muhammad's ﷺ life for Maulidur Rasul — from his birth in Mecca to his passing in Madinah.">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Work+Sans:wght@300;400;500;600&display=swap');
+
+  :root{
+    --ink:#0B3630;
+    --ink-deep:#082722;
+    --gold:#C8973F;
+    --gold-soft:#E3C77E;
+    --parchment:#F7F2E4;
+    --parchment-line:#E6DABC;
+    --card-bg:#FFFDF7;
+    --maroon:#7A2E2E;
+    --text-dark:#1F2A26;
+    --text-mute:#5B6A63;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:#0b1020;
+    color:#e9dfc7;
+    font-family:'Work Sans', sans-serif;
+    font-weight:400;
+    line-height:1.6;
+  }
+  h1,h2,h3,.era-when{font-family:'Amiri', serif;}
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  button{font-family:inherit; cursor:pointer;}
+
+  /* ---------- Reading progress ---------- */
+  .progress-track{position:fixed; top:0; left:0; width:100%; height:3px; z-index:200;}
+  .progress-fill{height:100%; width:0%; background:linear-gradient(90deg, var(--gold), var(--gold-soft));}
+
+  /* ---------- Navbar ---------- */
+  .navbar{
+    position:sticky; top:0; z-index:150;
+    background:rgba(8,39,34,.94);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid rgba(200,151,63,.25);
+    display:flex; align-items:center; justify-content:center; flex-wrap:wrap; row-gap:.65rem;
+    padding:.85rem 1.6rem;
+  }
+  .nav-logo{color:var(--gold-soft); font-family:'Amiri', serif; font-size:1.05rem; letter-spacing:.02em;}
+  .nav-links{display:flex; gap:1.4rem; width:100%; justify-content:center; order:3; list-style:none; margin:0; padding:0;}
+  .nav-links button{background:none; border:none; color:#D9E4DE; font-size:.86rem; padding:.3rem 0; position:relative; transition:color .2s;}
+  .nav-links button::after{content:""; position:absolute; left:0; bottom:-3px; width:0; height:1px; background:var(--gold); transition:width .25s;}
+  .nav-links button:hover, .nav-links button.active{color:var(--gold-soft);}
+  .nav-links button.active::after{width:100%;}
+  .lang-toggle{display:flex; gap:.3rem; margin-left:auto;}
+  .lang-btn{background:transparent; border:1px solid rgba(227,199,126,.4); color:#D9E4DE; font-size:.72rem; padding:.32rem .6rem; transition:all .2s;}
+  .lang-btn:hover{border-color:var(--gold-soft);}
+  .lang-btn.active{background:var(--gold); border-color:var(--gold); color:var(--ink-deep); font-weight:600;}
+  @media (max-width:640px){ .nav-links{gap:.9rem;} .nav-links button{font-size:.78rem;} }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    background:radial-gradient(circle at 18% 25%, #fff4bd 0 1px, transparent 2px),radial-gradient(circle at 78% 16%, #fff4bd 0 1px, transparent 2px),radial-gradient(circle at 55% 30%, rgba(255,244,189,.8) 0 1px, transparent 2px),radial-gradient(ellipse at 50% 55%, #172445 0%, #080d1b 62%, #03050b 100%);
+    color:var(--parchment); padding:6rem 1.5rem 5.5rem; text-align:center; overflow:hidden;
+  }
+  .hero .lattice{
+    position:absolute; inset:0; opacity:.16;
+    background-image:
+      linear-gradient(30deg, var(--gold) 1px, transparent 1px),
+      linear-gradient(150deg, var(--gold) 1px, transparent 1px),
+      linear-gradient(90deg, var(--gold) 1px, transparent 1px);
+    background-size: 64px 110px, 64px 110px, 64px 110px;
+    mask-image: radial-gradient(ellipse at 50% 20%, black 0%, transparent 70%);
+  }
+  .hero-content{position:relative; z-index:1; max-width:760px; margin:0 auto;}
+  .kicker{font-size:.8rem; letter-spacing:.14em; color:var(--gold-soft); margin-bottom:1.4rem;}
+  .hero h1{font-size:clamp(2.2rem, 5.5vw, 3.5rem); font-weight:700; line-height:1.15; margin:0 0 1.1rem;}
+  .hero h1 span{display:block;}
+  .hero h1 .peace{font-size:.42em; color:var(--gold-soft); margin-top:.6rem; font-family:'Work Sans', sans-serif;}
+  .hero p.lede{font-size:1.06rem; color:#D9E4DE; max-width:520px; margin:0 auto;}
+  .hero .years{margin-top:1.8rem; display:inline-flex; align-items:center; gap:.9rem; font-family:'Amiri', serif; font-size:1.1rem; color:var(--gold-soft);}
+  .hero .years .dot{width:5px;height:5px;background:var(--gold-soft);border-radius:50%;}
+  .hero::after{content:"";position:absolute;left:-5%;right:-5%;bottom:-1px;height:38%;background:linear-gradient(to top,#b77d38,#5a3d2c 45%,transparent);clip-path:polygon(0 55%,12% 48%,25% 61%,39% 43%,53% 59%,67% 40%,82% 57%,100% 45%,100% 100%,0 100%);opacity:.95;z-index:0;}
+  .hero::before{content:"✦";position:absolute;left:50%;top:13%;transform:translateX(-50%);color:#fff4bd;font-size:2rem;text-shadow:0 0 18px rgba(255,244,189,.8);z-index:0;}
+
+
+  .hero-buttons{margin-top:2.4rem; display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;}
+  .btn{padding:.75rem 1.5rem; font-size:.92rem; border-radius:2px; transition:transform .15s, background .2s, color .2s, border-color .2s;}
+  .btn:active{transform:translateY(1px);}
+  .btn-primary{background:var(--gold); border:1px solid var(--gold); color:var(--ink-deep); font-weight:500;}
+  .btn-primary:hover{background:var(--gold-soft); border-color:var(--gold-soft);}
+  .btn-outline{background:transparent; border:1px solid rgba(227,199,126,.55); color:var(--gold-soft);}
+  .btn-outline:hover{border-color:var(--gold-soft); background:rgba(227,199,126,.08);}
+
+  /* ---------- Intro ---------- */
+  .intro{max-width:680px; margin:0 auto; padding:4.2rem 1.5rem 1.5rem; text-align:center;}
+  .intro h2{font-size:1.55rem; color:var(--ink); margin-bottom:1rem;}
+  .intro p{color:var(--text-mute); font-size:1.02rem;}
+
+  /* ---------- Filter bar ---------- */
+  .filter-bar{display:flex; justify-content:center; gap:.4rem; flex-wrap:wrap; margin:2.4rem auto 0; padding:0 1.5rem;}
+  .filter-btn{background:transparent; border:1px solid var(--parchment-line); color:var(--text-mute); padding:.5rem 1.1rem; font-size:.86rem; transition:all .2s;}
+  .filter-btn:hover{border-color:var(--gold); color:var(--ink);}
+  .filter-btn.active{background:var(--ink); border-color:var(--ink); color:var(--gold-soft);}
+
+  /* ---------- Timeline ---------- */
+  .timeline-section{max-width:1000px; margin:0 auto; padding:3rem 1.5rem 2rem; position:relative;}
+  .timeline{position:relative;}
+  .spine{position:absolute; left:50%; top:0; bottom:0; width:2px; transform:translateX(-1px); background:var(--parchment-line);}
+  .spine-fill{position:absolute; left:0; top:0; width:100%; height:0%; background:linear-gradient(var(--gold), var(--gold-soft)); transition:height .15s linear;}
+
+  .era{position:relative; width:100%; margin-bottom:2.6rem; display:flex; transition:opacity .35s ease, transform .35s ease, max-height .35s ease, margin .35s ease;}
+  .era:last-child{margin-bottom:0;}
+  .era.filtered-out{opacity:0; transform:scale(.95); max-height:0; margin-bottom:0; overflow:hidden; pointer-events:none;}
+
+  .era-card{width:calc(50% - 46px); background:var(--card-bg); border:1px solid var(--parchment-line); padding:1.5rem 1.6rem; position:relative;}
+  .era-card::before{content:""; position:absolute; top:1.4rem; width:10px; height:10px; border:1px solid var(--gold); transform:rotate(45deg); background:var(--parchment);}
+  .era:nth-child(odd){justify-content:flex-start;}
+  .era:nth-child(even){justify-content:flex-end;}
+  .era:nth-child(odd) .era-card::before{ right:-51px; }
+  .era:nth-child(even) .era-card::before{ left:-51px; }
+
+  .node{position:absolute; left:50%; top:1.35rem; transform:translateX(-50%); width:13px; height:13px; background:var(--parchment); border:2px solid var(--gold); border-radius:50%; z-index:2; transition:background .3s;}
+  .node.lit{background:var(--gold);}
+
+  .card-top{display:flex; align-items:flex-start; gap:.7rem; margin-bottom:.6rem;}
+  .icon-wrap{flex:none; width:36px; height:36px; border-radius:50%; border:1px solid var(--gold); display:flex; align-items:center; justify-content:center;}
+  .icon-wrap svg{width:18px; height:18px; stroke:var(--maroon); fill:none; stroke-width:1.6;}
+  .card-heading{flex:1;}
+  .tag{display:inline-block; font-size:.68rem; letter-spacing:.03em; color:var(--maroon); background:rgba(122,46,46,.08); padding:.15rem .5rem; margin-bottom:.3rem;}
+  .era-when{font-size:.92rem; color:var(--maroon); margin:0 0 .1rem;}
+  .era-card h3{font-size:1.16rem; color:var(--ink); margin:.1rem 0 0; font-weight:700;}
+  .era-card p.teaser{font-size:.93rem; color:var(--text-mute); margin:0;}
+
+  .fact-toggle{margin-top:.85rem; background:none; border:none; padding:0; display:flex; align-items:center; gap:.4rem; font-size:.82rem; color:var(--gold); font-weight:500;}
+  .fact-toggle .chevron{transition:transform .25s;}
+  .fact-toggle.open .chevron{transform:rotate(90deg);}
+  .fact-box{max-height:0; overflow:hidden; transition:max-height .35s ease, opacity .3s ease, margin .3s ease; opacity:0; font-size:.86rem; color:var(--text-mute); border-left:2px solid var(--gold-soft); padding-left:0; margin-top:0;}
+  .fact-box.open{max-height:240px; opacity:1; padding-left:.8rem; margin-top:.7rem;}
+
+  /* ---------- Dot nav ---------- */
+  .dot-nav{position:fixed; right:1.4rem; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:.55rem; z-index:120;}
+  .dot-nav button{width:9px; height:9px; border-radius:50%; border:1px solid var(--gold); background:transparent; padding:0; position:relative;}
+  .dot-nav button.active{background:var(--gold);}
+  .dot-nav button .tip{position:absolute; right:16px; top:50%; transform:translateY(-50%); background:var(--ink); color:var(--parchment); font-size:.72rem; padding:.25rem .55rem; white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .15s;}
+  .dot-nav button:hover .tip{opacity:1;}
+  @media (max-width:900px){ .dot-nav{display:none;} }
+
+  /* ---------- Character section ---------- */
+  .character{background:var(--ink); color:var(--parchment); padding:4.2rem 1.5rem; margin-top:3.5rem;}
+  .character-inner{max-width:920px; margin:0 auto;}
+  .character h2{text-align:center; font-size:1.65rem; color:var(--gold-soft); margin-bottom:.6rem;}
+  .character-inner > p.sub{text-align:center; color:#C9D6CF; max-width:520px; margin:0 auto 2.4rem; font-size:.96rem;}
+  .traits{display:grid; grid-template-columns:repeat(auto-fit, minmax(210px,1fr)); gap:1.4rem;}
+  .trait{perspective:1200px; height:190px;}
+  .trait-inner{position:relative; width:100%; height:100%; transition:transform .6s; transform-style:preserve-3d;}
+  .trait.flipped .trait-inner{transform:rotateY(180deg);}
+  .trait-face{position:absolute; inset:0; backface-visibility:hidden; border-top:2px solid var(--gold); padding:1rem 0 0; display:flex; flex-direction:column; justify-content:flex-start;}
+  .trait-face.back{transform:rotateY(180deg);}
+  .trait h4{font-family:'Amiri', serif; font-size:1.08rem; color:var(--gold-soft); margin:0 0 .5rem; font-weight:700;}
+  .trait p{font-size:.87rem; color:#C9D6CF; margin:0;}
+  .flip-hint{margin-top:auto; font-size:.72rem; color:var(--gold); opacity:.85;}
+  .trait-face.back p{font-style:italic;}
+  .trait button.trait-btn{background:none; border:none; text-align:left; width:100%; height:100%; color:inherit; padding:0;}
+
+  /* ---------- Closing ---------- */
+  .closing{max-width:680px; margin:0 auto; padding:4.2rem 1.5rem 5rem; text-align:center;}
+  .closing h2{font-size:1.5rem; color:var(--ink); margin-bottom:1rem;}
+  .closing p{color:var(--text-mute); font-size:1rem; margin-bottom:.5rem;}
+  .salawat-box{margin-top:2rem; border-top:1px solid var(--parchment-line); border-bottom:1px solid var(--parchment-line); padding:1.4rem 0;}
+  .salawat{font-family:'Amiri', serif; font-style:italic; font-size:1.12rem; color:var(--maroon); margin:0 0 .9rem;}
+  .copy-btn{background:transparent; border:1px solid var(--maroon); color:var(--maroon); padding:.4rem 1rem; font-size:.78rem; transition:all .2s;}
+  .copy-btn:hover{background:var(--maroon); color:var(--parchment);}
+  .copy-btn.copied{background:var(--ink); border-color:var(--ink); color:var(--gold-soft);}
+
+  footer{text-align:center; padding:2rem 1.5rem; font-size:.8rem; color:var(--text-mute); border-top:1px solid var(--parchment-line);}
+  .footer-sources{font-size:.72rem; color:#8B978F; margin-top:.4rem;}
+
+  /* ---------- Back to top ---------- */
+  .back-top{position:fixed; bottom:1.4rem; right:1.4rem; width:42px; height:42px; background:var(--ink); border:1px solid var(--gold); color:var(--gold-soft); border-radius:50%; display:flex; align-items:center; justify-content:center; opacity:0; transform:translateY(10px); pointer-events:none; transition:opacity .25s, transform .25s; z-index:130;}
+  .back-top.show{opacity:1; transform:translateY(0); pointer-events:auto;}
+
+  /* ---------- Mobile ---------- */
+  @media (max-width:720px){
+    .spine{left:18px;}
+    .era{justify-content:flex-start !important;}
+    .era-card{width:100%; margin-left:44px;}
+    .era-card::before{ left:-40px !important; right:auto !important; top:1.35rem;}
+    .node{left:18px;}
+    .traits{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:420px){ .traits{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+
+<div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+<nav class="navbar">
+  <div class="nav-logo">Muhammad ﷺ</div>
+  <ul class="nav-links">
+    <li><button data-target="intro-section" data-i18n="nav_story">Story</button></li>
+    <li><button data-target="timeline" data-i18n="nav_timeline">Timeline</button></li>
+    <li><button data-target="character-section" data-i18n="nav_character">Character</button></li>
+    <li><button data-target="closing-section" data-i18n="nav_reflection">Reflection</button></li>
+  </ul>
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="en">EN</button>
+    <button class="lang-btn" data-lang="ms">BM</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="lattice"></div>
+  <div class="hero-content">
+    <div class="kicker" data-i18n="hero_kicker">MAULIDUR RASUL · THE PROPHET'S BIRTHDAY</div>
+    <h1>
+      <span data-i18n="hero_title">The Life of the Messenger</span>
+      <span class="peace" data-i18n="hero_peace">ﷺ Muhammad, may peace be upon him</span>
+    </h1>
+    <p class="lede" data-i18n="hero_lede">From an orphaned boy raised in the hills of Mecca to a mercy the world still turns to — walk through every chapter of his story, moment by moment.</p>
+    <div class="years">
+      <span data-i18n="year_570">570 CE</span><span class="dot"></span>
+      <span data-i18n="year_mecca">Mecca</span><span class="dot"></span>
+      <span data-i18n="year_632">632 CE</span><span class="dot"></span>
+      <span data-i18n="year_madinah">Madinah</span>
+    </div>
+    <div class="hero-buttons">
+      <button class="btn btn-primary" data-target="timeline" data-i18n="hero_btn_primary">Explore the timeline</button>
+      <button class="btn btn-outline" data-target="character-section" data-i18n="hero_btn_secondary">See his character</button>
+    </div>
+  </div>
+</section>
+
+<section class="intro" id="intro-section">
+  <h2 data-i18n="intro_h2">Why we mark Maulidur Rasul</h2>
+  <p data-i18n="intro_p">Maulidur Rasul is the day Muslims remember the birth of Prophet Muhammad ﷺ and reflect on his life — his honesty, patience, and compassion. It's less about celebration for its own sake, and more about revisiting his story so his example can guide how we live. Scroll through his life below, or jump straight to a period that interests you.</p>
+</section>
+
+<div class="filter-bar" id="filterBar">
+  <button class="filter-btn active" data-filter="all" data-i18n="filter_all">All years</button>
+  <button class="filter-btn" data-filter="mecca" data-i18n="filter_mecca">Mecca years</button>
+  <button class="filter-btn" data-filter="madinah" data-i18n="filter_madinah">Madinah years</button>
+</div>
+
+<section class="timeline-section" id="timeline">
+  <div class="timeline" id="timelineList">
+    <div class="spine"><div class="spine-fill" id="spineFill"></div></div>
+
+    <div class="era" data-phase="mecca" id="era-1">
+      <div class="era-card">
+        <div class="node lit"></div>
+        <div class="card-top">
+          <div class="icon-wrap"><svg viewBox="0 0 24 24"><path d="M12 3v6M8 21c0-3 1.8-5 4-5s4 2 4 5"/><circle cx="12" cy="11" r="2.5"/></svg></div>
+          <div class="card-heading">
+            <span class="tag" data-i18n="e1_tag">Birth</span>
+            <div class="era-when" data-i18n="e1_when">570 CE — Year of the Elephant</div>
+            <h3 data-i18n="e1_title">Born in Mecca</h3>
+          </div>
+        </div>
+        <p class="teaser" data-i18n="e1_teaser">Muhammad ﷺ was born in Mecca into the Banu Hashim clan of the Quraysh tribe. His father, Abdullah, had passed away before he was born, so from his very first day, he grew up without a father.</p>
+        <button class="fact-toggle"><span class="chevron">›</span> <span data-i18n="fact_toggle">Did you know?</span></button>
+        <div class="fact-box" data-i18n="e1_fact">That same year, an army from Yemen marched on Mecca with war elephants, intending to destroy the Kaaba — the attack failed, and the year became known ever after as "the Year of the Elephant."</div>
+      </div>
+    </div>
+
+    <div class="era" data-phase="mecca" id="era-2">
+      <div class="era-card">
+        <div class="node"></div>
+        <div class="card-top">
+          <div class="icon-wrap"><svg viewBox="0 0 24 24"><path d="M4 20c2-6 5-9 8-9s6 3 8 9"/><circle cx="12" cy="7" r="3"/></svg></div>
+          <div class="card-heading">
+            <span class="tag" data-i18n="e2_tag">Family</span>
+            <div class="era-when" data-i18n="e2_when">Age 6 – 8</div>
+            <h3 data-i18n="e2_title">Early losses, a caring family</h3>
+          </div>
+        </div>
+        <p class="teaser" data-i18n="e2_teaser">His mother Aminah passed away when he was six, and his grandfather Abdul Muttalib, who then cared for him, died two years later. His uncle Abu Talib took him in and raised him with love for the rest of his childhood.</p>
+        <button class="fact-toggle"><span class="chevron">›</span> <span data-i18n="fact_toggle">Did you know?</span></button>
+        <div class="fact-box" data-i18n="e2_fact">As a baby, he was sent to be nursed in the desert by Halimah al-Sa'diyah, a common Meccan custom believed to build stronger health and clearer Arabic — a practice thought to have shaped his calm, eloquent manner.</div>
+      </div>
+    </div>
+
+    <div class="era" data-phase="mecca" id="era-3">
+      <div class="era-card">
+        <div class="node"></div>
+        <div class="card-top">
+          <div class="icon-wrap"><svg viewBox="0 0 24 24"><path d="M12 3l2 5 5 .6-3.7 3.5 1 5L12 14.8 7.7 17l1-5L5 8.6 10 8z"/></svg></div>
+          <div class="card-heading">
+            <span class="tag" data-i18n="e3_tag">Character</span>
+            <div class="era-when" data-i18n="e3_when">Childhood & youth</div>
+            <h3 data-i18n="e3_title">"Al-Amin" — The Trustworthy</h3>
+          </div>
+        </div>
+        <p class="teaser" data-i18n="e3_teaser">As a young shepherd and later a trader travelling with caravans, he became known across Mecca for his honesty and fairness. People called him Al-Amin, "the trustworthy one," and often asked him to settle disputes.</p>
+        <button class="fact-toggle"><span class="chevron">›</span> <span data-i18n="fact_toggle">Did you know?</span></button>
+        <div class="fact-box" data-i18n="e3_fact">At around 35, rival clans nearly came to blows over who would place the sacred Black Stone back into the rebuilt Kaaba wall. His solution — having every clan lift it together on a cloth — avoided a war entirely.</div>
+      </div>
+    </div>
+
+    <div class="era" data-phase="mecca" id="era-4">
+      <div class="era-card">
+        <div class="node"></div>
+        <div class="card-top">
+          <div class="icon-wrap"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg></div>
+          <div class="card-heading">
+            <span class="tag" data-i18n="e4_tag">Marriage</span>
+            <div class="era-when" data-i18n="e4_when">Age 25</div>
+            <h3 data-i18n="e4_title">Marriage to Khadijah</h3>
+          </div>
+        </div>
+        <p class="teaser" data-i18n="e4_teaser">He married Khadijah bint Khuwaylid, a respected and successful businesswoman fifteen years his senior. Their marriage was one of deep partnership, and she became the very first person to believe in his message.</p>
+        <button class="fact-toggle"><span class="chevron">›</span> <span data-i18n="fact_toggle">Did you know?</span></button>
+        <div class="fact-box" data-i18n="e4_fact">Khadijah proposed to him through an intermediary after being deeply impressed by his honesty while trading her goods. They stayed married for about 25 years, until her passing.</div>
+      </div>
+    </div>
+
+    <div class="era" data-phase="mecca" id="era-5">
+      <div class="era-card">
+        <div class="node lit"></div>
+        <div class="card-top">
+          <div class="icon-wrap"><svg viewBox="0 0 24 24"><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/><circle cx="12" cy="12" r="4"/></svg></div>
+          <div class="card-heading">
+            <span class="tag" data-i18n="e5_tag">Revelation</span>
+            <div class="era-when" data-i18n="e5_when">Age 40 · 610 CE</div>
+            <h3 data-i18n="e5_title">The first revelation</h3>
+          </div>
+        </div>
+        <p class="teaser" data-i18n="e5_teaser">While reflecting alone in the Cave of Hira, he received his first revelation from the Angel Jibril (Gabriel) — the opening verses of Surah Al-Alaq. This marked the beginning of his mission as a Prophet.</p>
+        <button class="fact-toggle"><span class="chevron">›</span> <span data-i18n="fact_toggle">Did you know?</span></button>
+        <div class="fact-box" data-i18n="e5_fact">Shaken by the encounter, he hurried home and asked Khadijah to wrap him in a blanket. It was her calm reassurance that helped him understand what had just happened to him.</div>
+      </div>
+    </div>
+
+    <div class="era" data-phase="mecca" id="era-6">
+      <div class="era-card">
+        <div class="node"></div>
+        <div class="card-top">
+          <div class="icon-wrap"><svg viewBox="0 0 24 24"><path d="M4 19V6a2 2 0 0 1 2-2h5v15M20 19V6a2 2 0 0 0-2-2h-5v15M2 19h20"/></svg></div>
+          <div class="card-heading">
+            <span class="tag" data-i18n="e6_tag">Growing faith</span>
+            <div class="era-when" data-i18n="e6_when">Years 1 – 10 of Prophethood</div>
+            <h3 data-i18n="e6_title">Preaching in Mecca</h3>
+          </div>
+        </div>
+        <p class="teaser" data-i18n="e6_teaser">He first shared the message quietly with close family and friends, then openly with the whole city. Many early Muslims faced harsh persecution for following him — yet the small community held firm and slowly grew.</p>
+        <button class="fact-toggle"><span class="chevron">›</span> <span data-i18n="fact_toggle">Did you know?</span></button>
+        <div class="fact-box" data-i18n="e6_fact">Early believers came from every level of society — from Khadijah and young Ali, to Bilal, a formerly enslaved man who endured torture for his faith and later became the first person to call the adhan.</div>
+      </div>
+    </div>
+
+    <div class="era" data-phase="mecca" id="era-7">
+      <div class="era-card">
+        <div class="node"></div>
+        <div class="card-top">
+          <div class="icon-wrap"><svg viewBox="0 0 24 24"><path d="M12 21c-4-3.5-8-7.1-8-11.5A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 8 3.5C20 13.9 16 17.5 12 21z" opacity=".6"/></svg></div>
+          <div class="card-heading">
+            <span class="tag" data-i18n="e7_tag">Trial</span>
+            <div class="era-when" data-i18n="e7_when">Year 10 of Prophethood</div>
+            <h3 data-i18n="e7_title">The Year of Sorrow</h3>
+          </div>
+        </div>
+        <p class="teaser" data-i18n="e7_teaser">Known as Aam al-Huzn, this was one of the hardest years of his life: he lost both Khadijah, his beloved wife, and Abu Talib, his protective uncle, within a short span of time.</p>
+        <button class="fact-toggle"><span class="chevron">›</span> <span data-i18n="fact_toggle">Did you know?</span></button>
+        <div class="fact-box" data-i18n="e7_fact">In that same painful year, he travelled to the nearby town of Ta'if hoping for support — instead he was mocked and stoned by its people, one of the most difficult days described in his life.</div>
+      </div>
+    </div>
+
+    <div class="era" data-phase="mecca" id="era-8">
+      <div class="era-card">
+        <div class="node"></div>
+        <div class="card-top">
+          <div class="icon-wrap"><svg viewBox="0 0 24 24"><path d="M21 12.5A8.5 8.5 0 1 1 11.5 3a7 7 0 0 0 9.5 9.5z"/></svg></div>
+          <div class="card-heading">
+            <span class="tag" data-i18n="e8_tag">Miracle</span>
+            <div class="era-when" data-i18n="e8_when">Year 11 – 12 of Prophethood</div>
+            <h3 data-i18n="e8_title">Isra' and Mi'raj — the Night Journey</h3>
+          </div>
+        </div>
+        <p class="teaser" data-i18n="e8_teaser">In one night, he was miraculously taken from Mecca to Jerusalem and then ascended through the heavens. It was during this journey that the five daily prayers were prescribed to Muslims.</p>
+        <button class="fact-toggle"><span class="chevron">›</span> <span data-i18n="fact_toggle">Did you know?</span></button>
+        <div class="fact-box" data-i18n="e8_fact">When he described the journey to a skeptical crowd the next morning, his close friend Abu Bakr believed him instantly and without question — earning him the title "As-Siddiq," the truthful one.</div>
+      </div>
+    </div>
+
+    <div class="era" data-phase="madinah" id="era-9">
+      <div class="era-card">
+        <div class="node lit"></div>
+        <div class="card-top">
+          <div class="icon-wrap"><svg viewBox="0 0 24 24"><path d="M4 21V10l8-6 8 6v11M9 21v-6h6v6"/></svg></div>
+          <div class="card-heading">
+            <span class="tag" data-i18n="e9_tag">New beginning</span>
+            <div class="era-when" data-i18n="e9_when">622 CE — Year 1 Hijrah</div>
+            <h3 data-i18n="e9_title">The migration to Madinah</h3>
+          </div>
+        </div>
+        <p class="teaser" data-i18n="e9_teaser">Facing growing danger in Mecca, he migrated to the city of Yathrib, later renamed Madinah. This journey, the Hijrah, marks the start of the Islamic calendar. There, he built the first mosque and united communities as brothers.</p>
+        <button class="fact-toggle"><span class="chevron">›</span> <span data-i18n="fact_toggle">Did you know?</span></button>
+        <div class="fact-box" data-i18n="e9_fact">He and Abu Bakr hid for three days in the Cave of Thawr while being hunted. A spider's web and a bird's nest that appeared across the entrance are said to have convinced their pursuers no one was inside.</div>
+      </div>
+    </div>
+
+    <div class="era" data-phase="madinah" id="era-10">
+      <div class="era-card">
+        <div class="node"></div>
+        <div class="card-top">
+          <div class="icon-wrap"><svg viewBox="0 0 24 24"><path d="M4 20l6-14 4 9 3-6 3 11"/></svg></div>
+          <div class="card-heading">
+            <span class="tag" data-i18n="e10_tag">Turning point</span>
+            <div class="era-when" data-i18n="e10_when">Year 2 – 3 Hijrah</div>
+            <h3 data-i18n="e10_title">Badr and Uhud</h3>
+          </div>
+        </div>
+        <p class="teaser" data-i18n="e10_teaser">The small, newly-formed Muslim community faced its first major test at the Battle of Badr and won against greater odds. A year later at Uhud, they faced a harder trial and learned lasting lessons in discipline.</p>
+        <button class="fact-toggle"><span class="chevron">›</span> <span data-i18n="fact_toggle">Did you know?</span></button>
+        <div class="fact-box" data-i18n="e10_fact">At Badr, the Muslims were outnumbered roughly three to one, yet prevailed. At Uhud, archers leaving their post mid-battle turned a likely victory into a costly lesson about following instructions.</div>
+      </div>
+    </div>
+
+    <div class="era" data-phase="madinah" id="era-11">
+      <div class="era-card">
+        <div class="node"></div>
+        <div class="card-top">
+          <div class="icon-wrap"><svg viewBox="0 0 24 24"><path d="M3 12h18M3 12l4-4M3 12l4 4M21 12l-4-4M21 12l-4 4"/></svg></div>
+          <div class="card-heading">
+            <span class="tag" data-i18n="e11_tag">Strategy & peace</span>
+            <div class="era-when" data-i18n="e11_when">Year 5 – 6 Hijrah</div>
+            <h3 data-i18n="e11_title">The Trench and the Treaty</h3>
+          </div>
+        </div>
+        <p class="teaser" data-i18n="e11_teaser">At the Battle of the Trench, Madinah withstood a siege from allied tribes using a defensive trench — a strategy new to Arabia. Soon after, the Treaty of Hudaybiyyah brought a rare, ten-year truce with Mecca.</p>
+        <button class="fact-toggle"><span class="chevron">›</span> <span data-i18n="fact_toggle">Did you know?</span></button>
+        <div class="fact-box" data-i18n="e11_fact">The idea for the trench came from Salman al-Farisi, a Persian companion, who introduced a military technique the Arabian tribes had never faced before — and it worked.</div>
+      </div>
+    </div>
+
+    <div class="era" data-phase="madinah" id="era-12">
+      <div class="era-card">
+        <div class="node"></div>
+        <div class="card-top">
+          <div class="icon-wrap"><svg viewBox="0 0 24 24"><path d="M12 2l2.5 6.5L21 9l-5 4.5L17.5 21 12 17.5 6.5 21 8 13.5 3 9l6.5-.5z" opacity=".7"/></svg></div>
+          <div class="card-heading">
+            <span class="tag" data-i18n="e12_tag">Peace & forgiveness</span>
+            <div class="era-when" data-i18n="e12_when">Year 7 – 8 Hijrah</div>
+            <h3 data-i18n="e12_title">Reaching beyond Arabia</h3>
+          </div>
+        </div>
+        <p class="teaser" data-i18n="e12_teaser">He sent letters to the rulers of neighbouring empires, inviting them to Islam. Then, in year 8, Mecca opened its gates to him — and rather than take revenge, he offered forgiveness to the city that had once driven him out.</p>
+        <button class="fact-toggle"><span class="chevron">›</span> <span data-i18n="fact_toggle">Did you know?</span></button>
+        <div class="fact-box" data-i18n="e12_fact">He entered Mecca with his head bowed low in humility rather than triumph, and declared a general amnesty — even for people who had once persecuted him and his followers for years.</div>
+      </div>
+    </div>
+
+    <div class="era" data-phase="madinah" id="era-13">
+      <div class="era-card">
+        <div class="node"></div>
+        <div class="card-top">
+          <div class="icon-wrap"><svg viewBox="0 0 24 24"><path d="M4 4v16M4 4h11l-2 4 2 4H4"/></svg></div>
+          <div class="card-heading">
+            <span class="tag" data-i18n="e13_tag">Farewell</span>
+            <div class="era-when" data-i18n="e13_when">Year 9 – 10 Hijrah</div>
+            <h3 data-i18n="e13_title">The Farewell Pilgrimage</h3>
+          </div>
+        </div>
+        <p class="teaser" data-i18n="e13_teaser">Delegations from across Arabia came to pledge their support, in what became known as the Year of Delegations. In year 10, he performed his one and only Hajj, delivering the Farewell Sermon.</p>
+        <button class="fact-toggle"><span class="chevron">›</span> <span data-i18n="fact_toggle">Did you know?</span></button>
+        <div class="fact-box" data-i18n="e13_fact">The Farewell Sermon spoke about racial equality, the rights of women, and the sanctity of life and property — principles still quoted and studied today, nearly 1,400 years later.</div>
+      </div>
+    </div>
+
+    <div class="era" data-phase="madinah" id="era-14">
+      <div class="era-card">
+        <div class="node lit"></div>
+        <div class="card-top">
+          <div class="icon-wrap"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9c0-.5 0-1-.1-1.5A7 7 0 0 1 12 3z"/></svg></div>
+          <div class="card-heading">
+            <span class="tag" data-i18n="e14_tag">Legacy</span>
+            <div class="era-when" data-i18n="e14_when">632 CE — Year 11 Hijrah</div>
+            <h3 data-i18n="e14_title">His passing in Madinah</h3>
+          </div>
+        </div>
+        <p class="teaser" data-i18n="e14_teaser">Prophet Muhammad ﷺ passed away in Madinah at the age of 63, in the home of his wife Aishah. He was buried where he passed away — a site now enclosed within the Prophet's Mosque, Masjid Nabawi.</p>
+        <button class="fact-toggle"><span class="chevron">›</span> <span data-i18n="fact_toggle">Did you know?</span></button>
+        <div class="fact-box" data-i18n="e14_fact">His final words are remembered as an instruction to keep up the prayer and to be kind to those in one's care — a simple, lasting summary of the life he lived.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="dot-nav" id="dotNav"></div>
+
+<section class="character" id="character-section">
+  <div class="character-inner">
+    <h2 data-i18n="character_h2">What his life still teaches us</h2>
+    <p class="sub" data-i18n="character_sub">Click a card to flip it and read how each quality showed up in his life. These are often what Muslims reflect on most during Maulidur Rasul.</p>
+    <div class="traits">
+      <div class="trait">
+        <button class="trait-btn" data-i18n-aria="flip_aria" aria-label="Flip card">
+          <div class="trait-inner">
+            <div class="trait-face front">
+              <h4 data-i18n="t1_title">Honesty</h4>
+              <p data-i18n="t1_front">Trusted by friend and rival alike, long before he became a Prophet.</p>
+              <span class="flip-hint" data-i18n="flip_hint">Tap to read more →</span>
+            </div>
+            <div class="trait-face back">
+              <p data-i18n="t1_back">"Al-Amin." Even the Meccans who rejected his message still left their valuables with him for safekeeping — they never doubted his word.</p>
+            </div>
+          </div>
+        </button>
+      </div>
+      <div class="trait">
+        <button class="trait-btn" data-i18n-aria="flip_aria" aria-label="Flip card">
+          <div class="trait-inner">
+            <div class="trait-face front">
+              <h4 data-i18n="t2_title">Patience</h4>
+              <p data-i18n="t2_front">He faced loss, rejection, and hardship without losing his sense of purpose.</p>
+              <span class="flip-hint" data-i18n="flip_hint">Tap to read more →</span>
+            </div>
+            <div class="trait-face back">
+              <p data-i18n="t2_back">After being stoned out of Ta'if, he is said to have prayed for the town's future generations rather than for punishment on those who hurt him.</p>
+            </div>
+          </div>
+        </button>
+      </div>
+      <div class="trait">
+        <button class="trait-btn" data-i18n-aria="flip_aria" aria-label="Flip card">
+          <div class="trait-inner">
+            <div class="trait-face front">
+              <h4 data-i18n="t3_title">Mercy</h4>
+              <p data-i18n="t3_front">He forgave those who had once persecuted him, even at the height of his power.</p>
+              <span class="flip-hint" data-i18n="flip_hint">Tap to read more →</span>
+            </div>
+            <div class="trait-face back">
+              <p data-i18n="t3_back">On the day Mecca fell to him, he could have taken revenge on every former enemy. Instead, he declared: "Go, you are free."</p>
+            </div>
+          </div>
+        </button>
+      </div>
+      <div class="trait">
+        <button class="trait-btn" data-i18n-aria="flip_aria" aria-label="Flip card">
+          <div class="trait-inner">
+            <div class="trait-face front">
+              <h4 data-i18n="t4_title">Humility</h4>
+              <p data-i18n="t4_front">He mended his own clothes, helped with chores, and treated everyone as an equal.</p>
+              <span class="flip-hint" data-i18n="flip_hint">Tap to read more →</span>
+            </div>
+            <div class="trait-face back">
+              <p data-i18n="t4_back">As a head of state, he still sat on the floor, milked his own goat, and insisted on sitting among his companions rather than above them.</p>
+            </div>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="closing" id="closing-section">
+  <h2 data-i18n="closing_h2">Selamat Menyambut Maulidur Rasul</h2>
+  <p data-i18n="closing_p">Remembering his life is an invitation to bring a little more of his character — honesty, patience, mercy, humility — into our own daily lives.</p>
+  <div class="salawat-box">
+    <p class="salawat" id="salawatText" data-i18n="salawat_text">"Indeed, the closest of people to me on the Day of Judgment will be those who send the most blessings upon me."</p>
+    <button class="copy-btn" id="copyBtn" data-i18n="copy_btn">Copy this reminder</button>
+  </div>
+</section>
+
+<footer>
+  <div data-i18n="footer_text">A simple timeline of Prophet Muhammad's ﷺ life, from birth to legacy.</div>
+  <div class="footer-sources" data-i18n="footer_sources">Based on widely recorded accounts from the Prophet's biography (Seerah).</div>
+</footer>
+
+<button class="back-top" id="backTop" aria-label="Back to top">↑</button>
+
+<script>
+  const translations = {
+    nav_story:{en:"Story",ms:"Kisah"},
+    nav_timeline:{en:"Timeline",ms:"Garis Masa"},
+    nav_character:{en:"Character",ms:"Peribadi"},
+    nav_reflection:{en:"Reflection",ms:"Renungan"},
+
+    hero_kicker:{en:"MAULIDUR RASUL · THE PROPHET'S BIRTHDAY",ms:"MAULIDUR RASUL · SAMBUTAN KELAHIRAN RASULULLAH"},
+    hero_title:{en:"The Life of the Messenger",ms:"Kisah Hidup Rasulullah"},
+    hero_peace:{en:"ﷺ Muhammad, may peace be upon him",ms:"ﷺ Muhammad, selawat dan salam ke atas Baginda"},
+    hero_lede:{en:"From an orphaned boy raised in the hills of Mecca to a mercy the world still turns to — walk through every chapter of his story, moment by moment.",ms:"Dari seorang anak yatim yang dibesarkan di bukit-bukau Makkah, kepada rahmat yang masih dicari seluruh dunia — teroka setiap babak kisah Baginda, detik demi detik."},
+    year_570:{en:"570 CE",ms:"570M"},
+    year_mecca:{en:"Mecca",ms:"Makkah"},
+    year_632:{en:"632 CE",ms:"632M"},
+    year_madinah:{en:"Madinah",ms:"Madinah"},
+    hero_btn_primary:{en:"Explore the timeline",ms:"Terokai garis masa"},
+    hero_btn_secondary:{en:"See his character",ms:"Lihat peribadi Baginda"},
+
+    intro_h2:{en:"Why we mark Maulidur Rasul",ms:"Mengapa kita menyambut Maulidur Rasul"},
+    intro_p:{en:"Maulidur Rasul is the day Muslims remember the birth of Prophet Muhammad ﷺ and reflect on his life — his honesty, patience, and compassion. It's less about celebration for its own sake, and more about revisiting his story so his example can guide how we live. Scroll through his life below, or jump straight to a period that interests you.",ms:"Maulidur Rasul adalah hari umat Islam mengenang kelahiran Nabi Muhammad ﷺ serta merenung kembali kehidupan Baginda — kejujuran, kesabaran, dan kasih sayangnya. Ia bukan sekadar sambutan, tetapi peluang untuk menghayati kisah Baginda agar contohnya terus membimbing cara kita hidup. Teroka kehidupan Baginda di bawah, atau terus ke zaman yang anda minati."},
+
+    filter_all:{en:"All years",ms:"Semua zaman"},
+    filter_mecca:{en:"Mecca years",ms:"Zaman Makkah"},
+    filter_madinah:{en:"Madinah years",ms:"Zaman Madinah"},
+
+    fact_toggle:{en:"Did you know?",ms:"Tahukah anda?"},
+
+    e1_tag:{en:"Birth",ms:"Kelahiran"},
+    e1_when:{en:"570 CE — Year of the Elephant",ms:"570M — Tahun Gajah"},
+    e1_title:{en:"Born in Mecca",ms:"Lahir di Makkah"},
+    e1_teaser:{en:"Muhammad ﷺ was born in Mecca into the Banu Hashim clan of the Quraysh tribe. His father, Abdullah, had passed away before he was born, so from his very first day, he grew up without a father.",ms:"Muhammad ﷺ dilahirkan di Makkah daripada keturunan Bani Hashim, suku Quraisy. Ayahandanya, Abdullah, telah wafat sebelum Baginda lahir, maka sejak hari pertama, Baginda membesar tanpa seorang ayah."},
+    e1_fact:{en:"That same year, an army from Yemen marched on Mecca with war elephants, intending to destroy the Kaaba — the attack failed, and the year became known ever after as \"the Year of the Elephant.\"",ms:"Pada tahun yang sama, tentera dari Yaman berarak ke Makkah dengan gajah perang, cuba memusnahkan Kaabah — serangan itu gagal, lalu tahun tersebut dikenali sebagai \"Tahun Gajah\"."},
+
+    e2_tag:{en:"Family",ms:"Keluarga"},
+    e2_when:{en:"Age 6 – 8",ms:"Usia 6 – 8 tahun"},
+    e2_title:{en:"Early losses, a caring family",ms:"Kehilangan awal, keluarga penyayang"},
+    e2_teaser:{en:"His mother Aminah passed away when he was six, and his grandfather Abdul Muttalib, who then cared for him, died two years later. His uncle Abu Talib took him in and raised him with love for the rest of his childhood.",ms:"Ibunda Baginda, Aminah, wafat ketika Baginda berusia enam tahun, dan datuknya, Abdul Muttalib, yang kemudian menjaganya turut wafat dua tahun selepas itu. Bapa saudaranya, Abu Talib, mengambil Baginda dan membesarkannya dengan penuh kasih sayang."},
+    e2_fact:{en:"As a baby, he was sent to be nursed in the desert by Halimah al-Sa'diyah, a common Meccan custom believed to build stronger health and clearer Arabic — a practice thought to have shaped his calm, eloquent manner.",ms:"Sebagai bayi, Baginda dihantar untuk disusukan di padang pasir oleh Halimah al-Sa'diyah, satu adat masyarakat Makkah yang dipercayai membina kesihatan yang kukuh dan pertuturan Arab yang fasih."},
+
+    e3_tag:{en:"Character",ms:"Peribadi"},
+    e3_when:{en:"Childhood & youth",ms:"Zaman kanak-kanak & remaja"},
+    e3_title:{en:"\"Al-Amin\" — The Trustworthy",ms:"\"Al-Amin\" — Yang Dipercayai"},
+    e3_teaser:{en:"As a young shepherd and later a trader travelling with caravans, he became known across Mecca for his honesty and fairness. People called him Al-Amin, \"the trustworthy one,\" and often asked him to settle disputes.",ms:"Sebagai penggembala muda dan kemudiannya peniaga yang mengembara bersama kafilah, Baginda dikenali di seluruh Makkah kerana kejujuran dan keadilannya. Masyarakat menggelarnya Al-Amin, 'yang dipercayai', dan sering meminta Baginda menyelesaikan pertikaian."},
+    e3_fact:{en:"At around 35, rival clans nearly came to blows over who would place the sacred Black Stone back into the rebuilt Kaaba wall. His solution — having every clan lift it together on a cloth — avoided a war entirely.",ms:"Pada usia sekitar 35 tahun, suku-suku Quraisy hampir bergaduh kerana bersaing meletakkan semula Hajar al-Aswad ke tembok Kaabah yang dibina semula. Penyelesaian Baginda — meminta semua suku mengangkatnya bersama di atas kain — berjaya mengelakkan peperangan."},
+
+    e4_tag:{en:"Marriage",ms:"Perkahwinan"},
+    e4_when:{en:"Age 25",ms:"Usia 25 tahun"},
+    e4_title:{en:"Marriage to Khadijah",ms:"Perkahwinan dengan Khadijah"},
+    e4_teaser:{en:"He married Khadijah bint Khuwaylid, a respected and successful businesswoman fifteen years his senior. Their marriage was one of deep partnership, and she became the very first person to believe in his message.",ms:"Baginda berkahwin dengan Khadijah binti Khuwailid, seorang usahawan yang dihormati dan berjaya, lebih tua lima belas tahun daripada Baginda. Perkahwinan mereka penuh sokongan dan kasih sayang, dan Khadijah menjadi orang pertama yang beriman kepada risalah Baginda."},
+    e4_fact:{en:"Khadijah proposed to him through an intermediary after being deeply impressed by his honesty while trading her goods. They stayed married for about 25 years, until her passing.",ms:"Khadijah melamar Baginda melalui orang tengah setelah terkesan dengan kejujuran Baginda semasa berniaga. Mereka kekal berkahwin selama kira-kira 25 tahun sehingga Khadijah wafat."},
+
+    e5_tag:{en:"Revelation",ms:"Wahyu"},
+    e5_when:{en:"Age 40 · 610 CE",ms:"Usia 40 tahun · 610M"},
+    e5_title:{en:"The first revelation",ms:"Wahyu pertama"},
+    e5_teaser:{en:"While reflecting alone in the Cave of Hira, he received his first revelation from the Angel Jibril (Gabriel) — the opening verses of Surah Al-Alaq. This marked the beginning of his mission as a Prophet.",ms:"Ketika bertafakur seorang diri di Gua Hira', Baginda menerima wahyu pertama daripada Malaikat Jibril — ayat-ayat pembuka Surah Al-Alaq. Inilah permulaan tugas Baginda sebagai Rasul."},
+    e5_fact:{en:"Shaken by the encounter, he hurried home and asked Khadijah to wrap him in a blanket. It was her calm reassurance that helped him understand what had just happened to him.",ms:"Terkejut dengan peristiwa itu, Baginda bergegas pulang dan meminta Khadijah menyelimutinya. Ketenangan dan sokongan Khadijah membantu Baginda memahami apa yang baru berlaku."},
+
+    e6_tag:{en:"Growing faith",ms:"Dakwah berkembang"},
+    e6_when:{en:"Years 1 – 10 of Prophethood",ms:"Tahun 1 – 10 Kenabian"},
+    e6_title:{en:"Preaching in Mecca",ms:"Berdakwah di Makkah"},
+    e6_teaser:{en:"He first shared the message quietly with close family and friends, then openly with the whole city. Many early Muslims faced harsh persecution for following him — yet the small community held firm and slowly grew.",ms:"Baginda mula-mula menyampaikan risalah secara sulit kepada keluarga dan sahabat rapat, kemudian secara terbuka kepada seluruh kota. Ramai umat Islam awal menghadapi penindasan yang berat kerana mengikuti Baginda — namun komuniti kecil ini terus teguh dan berkembang."},
+    e6_fact:{en:"Early believers came from every level of society — from Khadijah and young Ali, to Bilal, a formerly enslaved man who endured torture for his faith and later became the first person to call the adhan.",ms:"Golongan awal yang beriman datang daripada pelbagai lapisan masyarakat — daripada Khadijah dan Ali yang masih muda, sehingga Bilal, seorang bekas hamba yang tabah menghadapi penyeksaan dan kemudiannya menjadi muazzin pertama."},
+
+    e7_tag:{en:"Trial",ms:"Ujian"},
+    e7_when:{en:"Year 10 of Prophethood",ms:"Tahun 10 Kenabian"},
+    e7_title:{en:"The Year of Sorrow",ms:"Tahun Kesedihan (Aam al-Huzn)"},
+    e7_teaser:{en:"Known as Aam al-Huzn, this was one of the hardest years of his life: he lost both Khadijah, his beloved wife, and Abu Talib, his protective uncle, within a short span of time.",ms:"Dikenali sebagai Aam al-Huzn, ini merupakan salah satu tahun paling sukar dalam kehidupan Baginda: kehilangan Khadijah, isteri tercinta, dan Abu Talib, bapa saudara yang melindunginya, dalam tempoh masa yang singkat."},
+    e7_fact:{en:"In that same painful year, he travelled to the nearby town of Ta'if hoping for support — instead he was mocked and stoned by its people, one of the most difficult days described in his life.",ms:"Pada tahun yang sama, Baginda pergi ke Taif dengan harapan mendapat sokongan — sebaliknya Baginda dihina dan direjam batu, salah satu hari paling menyedihkan dalam kehidupannya."},
+
+    e8_tag:{en:"Miracle",ms:"Mukjizat"},
+    e8_when:{en:"Year 11 – 12 of Prophethood",ms:"Tahun 11 – 12 Kenabian"},
+    e8_title:{en:"Isra' and Mi'raj — the Night Journey",ms:"Israk dan Mikraj — Perjalanan Malam"},
+    e8_teaser:{en:"In one night, he was miraculously taken from Mecca to Jerusalem and then ascended through the heavens. It was during this journey that the five daily prayers were prescribed to Muslims.",ms:"Dalam satu malam, Baginda dibawa secara ajaib dari Makkah ke Baitulmaqdis dan kemudian naik melalui langit. Sepanjang perjalanan inilah solat lima waktu diwajibkan kepada umat Islam."},
+    e8_fact:{en:"When he described the journey to a skeptical crowd the next morning, his close friend Abu Bakr believed him instantly and without question — earning him the title \"As-Siddiq,\" the truthful one.",ms:"Apabila Baginda menceritakan perjalanan ini kepada orang ramai keesokan paginya, sahabat karibnya Abu Bakar terus mempercayainya tanpa ragu — lalu digelar \"As-Siddiq\", yang membenarkan."},
+
+    e9_tag:{en:"New beginning",ms:"Permulaan baharu"},
+    e9_when:{en:"622 CE — Year 1 Hijrah",ms:"622M — Tahun 1 Hijrah"},
+    e9_title:{en:"The migration to Madinah",ms:"Hijrah ke Madinah"},
+    e9_teaser:{en:"Facing growing danger in Mecca, he migrated to the city of Yathrib, later renamed Madinah. This journey, the Hijrah, marks the start of the Islamic calendar. There, he built the first mosque and united communities as brothers.",ms:"Berdepan ancaman yang semakin meningkat di Makkah, Baginda berhijrah ke kota Yathrib, yang kemudiannya dinamakan Madinah. Peristiwa Hijrah ini menandakan permulaan kalendar Islam. Di sana, Baginda membina masjid pertama dan menyatukan masyarakat sebagai bersaudara."},
+    e9_fact:{en:"He and Abu Bakr hid for three days in the Cave of Thawr while being hunted. A spider's web and a bird's nest that appeared across the entrance are said to have convinced their pursuers no one was inside.",ms:"Baginda dan Abu Bakar bersembunyi selama tiga hari di Gua Thur ketika diburu musuh. Sarang labah-labah dan sarang burung yang muncul di pintu gua dipercayai meyakinkan pemburu bahawa tiada sesiapa di dalamnya."},
+
+    e10_tag:{en:"Turning point",ms:"Titik perubahan"},
+    e10_when:{en:"Year 2 – 3 Hijrah",ms:"Tahun 2 – 3 Hijrah"},
+    e10_title:{en:"Badr and Uhud",ms:"Badar dan Uhud"},
+    e10_teaser:{en:"The small, newly-formed Muslim community faced its first major test at the Battle of Badr and won against greater odds. A year later at Uhud, they faced a harder trial and learned lasting lessons in discipline.",ms:"Komuniti Islam yang masih baru menghadapi ujian besar pertama dalam Perang Badar dan menang walaupun bilangan tentera lebih sedikit. Setahun kemudian di Uhud, mereka menghadapi ujian yang lebih berat dan mempelajari pengajaran penting tentang disiplin."},
+    e10_fact:{en:"At Badr, the Muslims were outnumbered roughly three to one, yet prevailed. At Uhud, archers leaving their post mid-battle turned a likely victory into a costly lesson about following instructions.",ms:"Di Badar, tentera Islam kalah bilangan lebih kurang tiga berbanding satu, namun tetap menang. Di Uhud, pemanah yang meninggalkan kedudukan mereka di tengah pertempuran mengubah kemenangan menjadi pengajaran berharga tentang mematuhi arahan."},
+
+    e11_tag:{en:"Strategy & peace",ms:"Strategi & keamanan"},
+    e11_when:{en:"Year 5 – 6 Hijrah",ms:"Tahun 5 – 6 Hijrah"},
+    e11_title:{en:"The Trench and the Treaty",ms:"Perang Khandak dan Perjanjian Hudaibiyah"},
+    e11_teaser:{en:"At the Battle of the Trench, Madinah withstood a siege from allied tribes using a defensive trench — a strategy new to Arabia. Soon after, the Treaty of Hudaybiyyah brought a rare, ten-year truce with Mecca.",ms:"Dalam Perang Khandak, Madinah bertahan daripada pengepungan gabungan suku-suku dengan menggunakan parit pertahanan — satu strategi yang baharu di tanah Arab. Tidak lama selepas itu, Perjanjian Hudaibiyah membawa gencatan senjata sepuluh tahun yang jarang berlaku dengan Makkah."},
+    e11_fact:{en:"The idea for the trench came from Salman al-Farisi, a Persian companion, who introduced a military technique the Arabian tribes had never faced before — and it worked.",ms:"Idea menggali parit datang daripada Salman al-Farisi, seorang sahabat berbangsa Parsi, yang memperkenalkan taktik ketenteraan yang belum pernah dilihat oleh suku-suku Arab — dan ia berjaya."},
+
+    e12_tag:{en:"Peace & forgiveness",ms:"Kedamaian & kemaafan"},
+    e12_when:{en:"Year 7 – 8 Hijrah",ms:"Tahun 7 – 8 Hijrah"},
+    e12_title:{en:"Reaching beyond Arabia",ms:"Dakwah melangkaui tanah Arab"},
+    e12_teaser:{en:"He sent letters to the rulers of neighbouring empires, inviting them to Islam. Then, in year 8, Mecca opened its gates to him — and rather than take revenge, he offered forgiveness to the city that had once driven him out.",ms:"Baginda menghantar surat kepada raja-raja empayar berjiran, menyeru mereka kepada Islam. Kemudian, pada tahun ke-8, Makkah membuka pintunya kepada Baginda — dan bukannya membalas dendam, Baginda memberi kemaafan kepada kota yang pernah menghalaunya."},
+    e12_fact:{en:"He entered Mecca with his head bowed low in humility rather than triumph, and declared a general amnesty — even for people who had once persecuted him and his followers for years.",ms:"Baginda memasuki Makkah dengan kepala tertunduk kerana rendah hati, bukan kemenangan, lalu mengisytiharkan pengampunan umum — walaupun kepada mereka yang pernah menganiaya Baginda dan pengikutnya selama bertahun-tahun."},
+
+    e13_tag:{en:"Farewell",ms:"Perpisahan"},
+    e13_when:{en:"Year 9 – 10 Hijrah",ms:"Tahun 9 – 10 Hijrah"},
+    e13_title:{en:"The Farewell Pilgrimage",ms:"Haji Wida' (Haji Perpisahan)"},
+    e13_teaser:{en:"Delegations from across Arabia came to pledge their support, in what became known as the Year of Delegations. In year 10, he performed his one and only Hajj, delivering the Farewell Sermon.",ms:"Perutusan dari seluruh tanah Arab datang untuk memberi sokongan, dalam apa yang dikenali sebagai Tahun Perutusan. Pada tahun ke-10, Baginda menunaikan haji yang pertama dan satu-satunya, sambil menyampaikan Khutbah Wida'."},
+    e13_fact:{en:"The Farewell Sermon spoke about racial equality, the rights of women, and the sanctity of life and property — principles still quoted and studied today, nearly 1,400 years later.",ms:"Khutbah Wida' menyentuh soal kesaksamaan kaum, hak wanita, serta kesucian nyawa dan harta — prinsip yang masih dipetik dan dikaji sehingga hampir 1,400 tahun kemudian."},
+
+    e14_tag:{en:"Legacy",ms:"Warisan"},
+    e14_when:{en:"632 CE — Year 11 Hijrah",ms:"632M — Tahun 11 Hijrah"},
+    e14_title:{en:"His passing in Madinah",ms:"Kewafatan Baginda di Madinah"},
+    e14_teaser:{en:"Prophet Muhammad ﷺ passed away in Madinah at the age of 63, in the home of his wife Aishah. He was buried where he passed away — a site now enclosed within the Prophet's Mosque, Masjid Nabawi.",ms:"Nabi Muhammad ﷺ wafat di Madinah pada usia 63 tahun, di rumah isterinya, Aishah. Baginda dikebumikan di tempat Baginda wafat — kini menjadi sebahagian daripada Masjid Nabawi."},
+    e14_fact:{en:"His final words are remembered as an instruction to keep up the prayer and to be kind to those in one's care — a simple, lasting summary of the life he lived.",ms:"Kata-kata terakhir Baginda diingati sebagai pesanan supaya sentiasa menjaga solat dan berbuat baik kepada mereka yang berada di bawah jagaan kita — rumusan ringkas namun mendalam bagi seluruh kehidupan Baginda."},
+
+    character_h2:{en:"What his life still teaches us",ms:"Apa yang kehidupan Baginda masih ajarkan kepada kita"},
+    character_sub:{en:"Click a card to flip it and read how each quality showed up in his life. These are often what Muslims reflect on most during Maulidur Rasul.",ms:"Klik kad untuk membaliknya dan membaca bagaimana setiap sifat ini terzahir dalam kehidupan Baginda. Inilah antara perkara yang paling sering direnungi umat Islam sepanjang Maulidur Rasul."},
+
+    t1_title:{en:"Honesty",ms:"Kejujuran"},
+    t1_front:{en:"Trusted by friend and rival alike, long before he became a Prophet.",ms:"Dipercayai oleh kawan mahupun lawan, jauh sebelum Baginda dilantik menjadi Rasul."},
+    t1_back:{en:"\"Al-Amin.\" Even the Meccans who rejected his message still left their valuables with him for safekeeping — they never doubted his word.",ms:"\"Al-Amin.\" Walaupun penduduk Makkah yang menolak seruannya, mereka tetap menitipkan barang berharga kepada Baginda untuk disimpan — kejujurannya tidak pernah diragui."},
+
+    t2_title:{en:"Patience",ms:"Kesabaran"},
+    t2_front:{en:"He faced loss, rejection, and hardship without losing his sense of purpose.",ms:"Baginda mengharungi kehilangan, penolakan, dan kesusahan tanpa pernah hilang tujuan hidupnya."},
+    t2_back:{en:"After being stoned out of Ta'if, he is said to have prayed for the town's future generations rather than for punishment on those who hurt him.",ms:"Selepas direjam keluar dari Taif, Baginda dikatakan berdoa untuk generasi akan datang penduduk kota itu, bukan mendoakan azab ke atas mereka yang menyakitinya."},
+
+    t3_title:{en:"Mercy",ms:"Kasih Sayang"},
+    t3_front:{en:"He forgave those who had once persecuted him, even at the height of his power.",ms:"Baginda memaafkan mereka yang pernah menganiayanya, walaupun ketika Baginda berada di kemuncak kekuasaan."},
+    t3_back:{en:"On the day Mecca fell to him, he could have taken revenge on every former enemy. Instead, he declared: \"Go, you are free.\"",ms:"Pada hari Makkah dibuka kepadanya, Baginda mampu membalas dendam ke atas setiap bekas musuh. Namun Baginda hanya berkata: \"Pergilah, kamu semua bebas.\""},
+
+    t4_title:{en:"Humility",ms:"Kerendahan Hati"},
+    t4_front:{en:"He mended his own clothes, helped with chores, and treated everyone as an equal.",ms:"Baginda menampal sendiri pakaiannya, membantu kerja rumah, dan melayan semua orang secara setara."},
+    t4_back:{en:"As a head of state, he still sat on the floor, milked his own goat, and insisted on sitting among his companions rather than above them.",ms:"Sebagai seorang ketua negara, Baginda tetap duduk di atas lantai, memerah susu kambingnya sendiri, dan lebih suka duduk bersama para sahabat berbanding di atas mereka."},
+
+    flip_hint:{en:"Tap to read more →",ms:"Ketik untuk baca lagi →"},
+    flip_aria:{en:"Flip card",ms:"Balikkan kad"},
+
+    closing_h2:{en:"A Life to Remember",ms:"Kehidupan untuk Dikenang"},
+    closing_p:{en:"Remembering his life is an invitation to bring a little more of his character — honesty, patience, mercy, humility — into our own daily lives.",ms:"Mengenang kehidupan Baginda adalah ajakan untuk membawa lebih banyak sifat Baginda — kejujuran, kesabaran, kasih sayang, kerendahan hati — ke dalam kehidupan seharian kita."},
+    salawat_text:{en:"\"Indeed, the closest of people to me on the Day of Judgment will be those who send the most blessings upon me.\"",ms:"\"Sesungguhnya manusia yang paling hampir denganku pada hari kiamat adalah mereka yang paling banyak berselawat ke atasku.\""},
+    copy_btn:{en:"Copy this reminder",ms:"Salin peringatan ini"},
+    copied:{en:"Copied ✓",ms:"Disalin ✓"},
+
+    footer_text:{en:"A simple timeline of Prophet Muhammad's ﷺ life, from birth to legacy.",ms:"Dihasilkan dengan penuh hormat sempena Maulidur Rasul · Garis masa ringkas kehidupan Nabi Muhammad ﷺ, dari kelahiran hingga warisan."},
+    footer_sources:{en:"Based on widely recorded accounts from the Prophet's biography (Seerah).",ms:"Berdasarkan riwayat yang masyhur daripada Sirah Nabawiyyah (biografi Rasulullah ﷺ)."}
+  };
+
+  // ---------- Reading progress ----------
+  const progressFill = document.getElementById('progressFill');
+  function updateProgress(){
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    progressFill.style.width = scrolled + '%';
+  }
+
+  // ---------- Timeline spine fill ----------
+  const spineFill = document.getElementById('spineFill');
+  const timelineSection = document.getElementById('timeline');
+  function updateSpine(){
+    const rect = timelineSection.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const total = rect.height;
+    const scrolled = Math.min(Math.max(vh * 0.75 - rect.top, 0), total);
+    const pct = total > 0 ? (scrolled / total) * 100 : 0;
+    spineFill.style.height = pct + '%';
+  }
+
+  window.addEventListener('scroll', () => { updateProgress(); updateSpine(); }, {passive:true});
+  window.addEventListener('resize', () => { updateProgress(); updateSpine(); });
+  updateProgress(); updateSpine();
+
+  // ---------- Smooth scroll ----------
+  document.querySelectorAll('[data-target]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const el = document.getElementById(btn.getAttribute('data-target'));
+      if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+
+  // ---------- Nav active state ----------
+  const navButtons = document.querySelectorAll('.nav-links button');
+  const navTargets = Array.from(navButtons).map(b => document.getElementById(b.getAttribute('data-target')));
+  const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        const idx = navTargets.indexOf(entry.target);
+        navButtons.forEach(b => b.classList.remove('active'));
+        if(idx > -1) navButtons[idx].classList.add('active');
+      }
+    });
+  }, {rootMargin:'-40% 0px -50% 0px'});
+  navTargets.forEach(t => t && navObserver.observe(t));
+
+  // ---------- Fact toggles ----------
+  document.querySelectorAll('.fact-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.classList.toggle('open');
+      const box = btn.nextElementSibling;
+      box.classList.toggle('open');
+    });
+  });
+
+  // ---------- Filter bar ----------
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  const eras = document.querySelectorAll('.era');
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.getAttribute('data-filter');
+      eras.forEach(era => {
+        const phase = era.getAttribute('data-phase');
+        era.classList.toggle('filtered-out', !(filter === 'all' || filter === phase));
+      });
+    });
+  });
+
+  // ---------- Dot navigation ----------
+  const dotNav = document.getElementById('dotNav');
+  const eraList = Array.from(eras);
+  eraList.forEach((era) => {
+    const dot = document.createElement('button');
+    dot.innerHTML = '<span class="tip"></span>';
+    dot.addEventListener('click', () => era.scrollIntoView({behavior:'smooth', block:'center'}));
+    dotNav.appendChild(dot);
+  });
+  const dotButtons = dotNav.querySelectorAll('button');
+  const dotObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const idx = eraList.indexOf(entry.target);
+      if(entry.isIntersecting && idx > -1){
+        dotButtons.forEach(d => d.classList.remove('active'));
+        dotButtons[idx].classList.add('active');
+      }
+    });
+  }, {rootMargin:'-45% 0px -45% 0px'});
+  eraList.forEach(era => dotObserver.observe(era));
+
+  // ---------- Trait flip cards ----------
+  document.querySelectorAll('.trait-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.closest('.trait').classList.toggle('flipped');
+    });
+  });
+
+  // ---------- Copy reminder ----------
+  const copyBtn = document.getElementById('copyBtn');
+  copyBtn.addEventListener('click', () => {
+    const text = document.getElementById('salawatText').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      copyBtn.textContent = translations.copied[currentLang];
+      copyBtn.classList.add('copied');
+      setTimeout(() => { copyBtn.textContent = translations.copy_btn[currentLang]; copyBtn.classList.remove('copied'); }, 1800);
+    });
+  });
+
+  // ---------- Back to top ----------
+  const backTop = document.getElementById('backTop');
+  window.addEventListener('scroll', () => {
+    backTop.classList.toggle('show', window.scrollY > 700);
+  }, {passive:true});
+  backTop.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+
+  // ---------- Language toggle ----------
+  let currentLang = 'en';
+  function applyLang(lang){
+    currentLang = lang;
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if(translations[key]) el.textContent = translations[key][lang];
+    });
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+      const key = el.getAttribute('data-i18n-aria');
+      if(translations[key]) el.setAttribute('aria-label', translations[key][lang]);
+    });
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+    eraList.forEach((era, i) => {
+      dotButtons[i].querySelector('.tip').textContent = era.querySelector('h3').textContent;
+    });
+  }
+  document.querySelectorAll('.lang-btn').forEach(b => b.addEventListener('click', () => applyLang(b.dataset.lang)));
+  applyLang('en');
+</script>
+
+</body>
+</html>
