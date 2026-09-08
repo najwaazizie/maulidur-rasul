@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jejak Rasulullah ﷺ</title>
+<style>
+:root{
+  --bg:#030813; --bg2:#08162a; --panel:#0d213a; --panel2:#112d4e;
+  --gold:#f2c66d; --gold2:#d7993d; --cream:#fff6db; --text:#f7f2e8;
+  --muted:#b9c6d4; --green:#79d5a2; --red:#ef8e8e; --sand:#8c623c;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; color:var(--text); font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  background:
+    radial-gradient(circle at 20% 10%,rgba(40,75,130,.22),transparent 30rem),
+    linear-gradient(180deg,var(--bg) 0%,#06101f 45%,#0b1e33 70%,#342416 100%);
+  min-height:100vh; overflow-x:hidden;
+}
+body:before{
+  content:""; position:fixed; inset:0; z-index:-5; pointer-events:none; opacity:.56;
+  background-image:
+    radial-gradient(circle,rgba(255,255,255,.95) 1px,transparent 1.5px),
+    radial-gradient(circle,rgba(242,198,109,.9) 1px,transparent 1.5px),
+    radial-gradient(circle,rgba(190,218,255,.75) .8px,transparent 1.3px);
+  background-size:67px 67px,113px 113px,181px 181px;
+  background-position:7px 13px,38px 51px,79px 26px;
+  animation:drift 26s linear infinite;
+}
+@keyframes drift{to{background-position:74px 80px,151px 164px,260px 207px}}
+body:after{
+  content:""; position:fixed; left:-8vw; right:-8vw; bottom:-9vh; height:29vh; z-index:-4; pointer-events:none;
+  background:
+    radial-gradient(65% 120% at 12% 100%,#8f623b 0 46%,transparent 47%),
+    radial-gradient(65% 120% at 52% 100%,#6e482d 0 51%,transparent 52%),
+    radial-gradient(70% 120% at 89% 100%,#573923 0 53%,transparent 54%);
+  filter:drop-shadow(0 -18px 50px rgba(0,0,0,.32));
+}
+a{color:inherit}
+button{font:inherit}
+.wrap{width:min(1160px,92vw);margin:auto}
+.hidden{display:none!important}
+
+nav{
+  position:sticky; top:0; z-index:100;
+  background:rgba(3,8,19,.76); backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(255,255,255,.08)
+}
+.navin{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px 0}
+.brand{font-weight:900;font-size:1rem;white-space:nowrap}.brand span{color:var(--gold)}
+.navlinks{display:flex;gap:5px;flex-wrap:wrap;justify-content:center}
+.navlinks button{
+  border:0;background:transparent;color:var(--muted);padding:8px 10px;border-radius:999px;
+  cursor:pointer;font-weight:700;font-size:.82rem
+}
+.navlinks button:hover,.navlinks button.active{background:var(--gold);color:#1d1507}
+.navgroup{position:relative}
+.navgroup>.journey-btn:after{content:' ▾';font-size:.72em}
+.dropdown{
+  position:absolute;top:calc(100% + 9px);left:50%;transform:translateX(-50%) translateY(-5px);
+  min-width:255px;padding:8px;border-radius:16px;background:rgba(8,20,36,.98);
+  border:1px solid rgba(255,255,255,.10);box-shadow:0 18px 50px rgba(0,0,0,.38);
+  opacity:0;visibility:hidden;pointer-events:none;transition:.18s;
+}
+.navgroup:hover .dropdown,.navgroup:focus-within .dropdown{opacity:1;visibility:visible;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+.dropdown button{display:block!important;width:100%;text-align:left;border-radius:11px!important;padding:10px 12px!important}
+.dropdown button+button{margin-top:3px}
+.score-pill{
+  border:1px solid rgba(242,198,109,.28);border-radius:999px;padding:8px 11px;
+  color:var(--cream);font-size:.84rem;white-space:nowrap
+}
+
+.page{display:none;animation:fade .35s ease}
+.page.active{display:block}
+@keyframes fade{from{opacity:.1;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.hero{
+  min-height:78vh;display:grid;grid-template-columns:1.15fr .85fr;gap:52px;align-items:center;
+  padding:68px 0 44px
+}
+.eyebrow{color:var(--gold);font-size:.75rem;text-transform:uppercase;letter-spacing:.18em;font-weight:900}
+h1{font-size:clamp(3.2rem,7vw,6.7rem);line-height:.89;letter-spacing:-.058em;margin:.18em 0 .24em}
+h1 small{display:block;color:var(--gold);font-size:.47em;line-height:1.15;letter-spacing:-.025em;margin-top:14px}
+.lead{font-size:clamp(1.02rem,2vw,1.22rem);line-height:1.75;color:#d9e2eb;max-width:720px}
+.quote{
+  margin:22px 0;border-left:3px solid var(--gold);padding:12px 16px;
+  background:linear-gradient(90deg,rgba(242,198,109,.10),transparent);
+  border-radius:0 13px 13px 0;color:var(--cream)
+}
+.quote small{display:block;margin-top:6px;color:var(--muted)}
+.moon{
+  width:min(390px,74vw);aspect-ratio:1;border-radius:50%;margin:auto;position:relative;
+  background:radial-gradient(circle at 38% 33%,#fffbd8 0 7%,#f6db8e 28%,#d7a34b 67%,#725027 100%);
+  box-shadow:0 0 55px rgba(242,198,109,.3),0 0 150px rgba(242,198,109,.14);
+  animation:float 6s ease-in-out infinite
+}
+.moon:after{
+  content:"☪";position:absolute;inset:0;display:grid;place-items:center;
+  color:rgba(55,38,14,.78);font-size:10rem;transform:rotate(-8deg)
+}
+@keyframes float{50%{transform:translateY(-10px)}}
+.btnrow{display:flex;gap:11px;flex-wrap:wrap;margin-top:24px}
+.btn{
+  border:0;border-radius:14px;padding:13px 18px;font-weight:850;cursor:pointer;text-decoration:none;
+  transition:.18s transform,.18s opacity
+}
+.btn:hover{transform:translateY(-2px)}
+.primary{background:var(--gold);color:#1d1508}
+.ghost{background:rgba(255,255,255,.07);color:var(--text);border:1px solid rgba(255,255,255,.1)}
+
+section{padding:65px 0}
+.sectionhead{display:flex;justify-content:space-between;gap:26px;align-items:end;margin-bottom:26px}
+.sectionhead h2{font-size:clamp(2rem,4vw,3.4rem);letter-spacing:-.04em;margin:0}
+.sectionhead p{margin:0;max-width:620px;color:var(--muted);line-height:1.65}
+
+.panel,.card,.mission,.slot{
+  border:1px solid rgba(255,255,255,.09);
+  background:linear-gradient(180deg,rgba(17,42,72,.94),rgba(7,19,34,.95));
+  box-shadow:0 20px 60px rgba(0,0,0,.22)
+}
+.panel{border-radius:24px;padding:25px}
+.card{border-radius:19px;padding:21px}
+.missions{display:grid;grid-template-columns:repeat(5,1fr);gap:13px}
+.mission{border-radius:18px;padding:18px;min-height:165px}
+.mission .n{font-size:.75rem;color:var(--gold);letter-spacing:.13em;font-weight:900}
+.mission h3{margin:9px 0 7px}.mission p{margin:0;color:var(--muted);font-size:.9rem;line-height:1.52}
+.icon{font-size:1.9rem}
+
+.status{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+.pill{padding:8px 11px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);font-size:.9rem}
+.progress{height:8px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden}
+.progress span{display:block;height:100%;width:0;background:var(--gold);transition:.3s width}
+.scenario{font-size:clamp(1.18rem,2.6vw,1.65rem);font-weight:850;line-height:1.55;padding:24px;border-radius:18px;background:rgba(255,255,255,.035);margin:18px 0}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.answer{
+  border:1px solid rgba(255,255,255,.09);background:#132f50;color:white;border-radius:14px;padding:13px 15px;
+  text-align:left;font-weight:800;cursor:pointer
+}
+.answer.correct{background:rgba(121,213,162,.17);border-color:var(--green)}
+.answer.wrong{background:rgba(239,142,142,.14);border-color:var(--red)}
+.feedback{min-height:64px;margin-top:15px;color:var(--muted);line-height:1.65}
+.grid3,.learn-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.card h3{margin:10px 0 7px}.card p{margin:0;color:var(--muted);line-height:1.6}
+.source{display:block;margin-top:11px;color:#d8bc7f;font-size:.78rem}
+
+.tree{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  grid-template-areas:
+  "father father mother mother"
+  ". prophet prophet ."
+  ". wife wife ."
+  "c1 c2 c3 c4"
+  "c5 c6 c7 .";
+  gap:13px
+}
+.slot{
+  min-height:102px;border-radius:17px;padding:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  font-weight:800
+}
+.slot:before{content:attr(data-role);display:block;color:var(--gold);font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;margin-bottom:7px}
+.slot.empty{border-style:dashed;border-color:rgba(242,198,109,.42);cursor:pointer}
+.slot.empty:hover{background:rgba(242,198,109,.08)}
+.slot.filled{border-color:rgba(121,213,162,.55);background:rgba(121,213,162,.10)}
+.slot.wrongflash{animation:shake .22s 2;border-color:var(--red)}
+@keyframes shake{50%{transform:translateX(7px)}}
+#father{grid-area:father}#mother{grid-area:mother}#prophet{grid-area:prophet}#wife{grid-area:wife}
+#child0{grid-area:c1}#child1{grid-area:c2}#child2{grid-area:c3}#child3{grid-area:c4}#child4{grid-area:c5}#child5{grid-area:c6}#child6{grid-area:c7}
+.center{border-color:rgba(242,198,109,.55);background:linear-gradient(180deg,rgba(242,198,109,.14),rgba(7,19,34,.95));font-size:1.1rem}
+.namebank{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}
+.namechip{
+  border:1px solid rgba(255,255,255,.10);background:#173554;color:#fff;border-radius:12px;padding:10px 12px;
+  cursor:pointer;font-weight:800
+}
+.namechip.selected{outline:2px solid var(--gold);background:rgba(242,198,109,.15)}
+.namechip.used{opacity:.23;pointer-events:none;text-decoration:line-through}
+.help{font-size:.9rem;color:var(--muted);line-height:1.6}
+
+.preview{
+  margin-bottom:16px;padding:15px 17px;border-radius:15px;
+  background:rgba(242,198,109,.10);border:1px solid rgba(242,198,109,.30);color:var(--cream)
+}
+.memory-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.memory-card{
+  min-height:128px;border:1px solid rgba(255,255,255,.10);border-radius:17px;
+  background:#153254;color:#fff;display:grid;place-items:center;text-align:center;padding:12px;
+  font-weight:850;cursor:pointer;position:relative;transition:.2s transform,.2s background
+}
+.memory-card:hover{transform:translateY(-2px)}
+.memory-card.covered{color:transparent;background:linear-gradient(145deg,#132c49,#081625)}
+.memory-card.covered:after{content:"✦";position:absolute;color:var(--gold);font-size:2rem}
+.memory-card.matched{background:rgba(121,213,162,.16);border-color:rgba(121,213,162,.55);color:#e5fff0}
+
+.bigscore{text-align:center;padding:35px}
+.bigscore .number{font-size:clamp(4rem,10vw,7.5rem);line-height:1;color:var(--gold);font-weight:950}
+.badges{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:18px}
+.badge{border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.07);padding:9px 12px;border-radius:999px}
+.nextbar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:22px}
+footer{padding:55px 0 105px;text-align:center;color:var(--muted)}
+footer p{max-width:800px;margin:10px auto 0;line-height:1.65;font-size:.85rem}
+.toast{
+  position:fixed;right:18px;bottom:18px;z-index:300;max-width:340px;padding:15px 17px;border-radius:14px;
+  background:#10243c;border:1px solid rgba(242,198,109,.45);box-shadow:0 18px 60px rgba(0,0,0,.38);
+  transform:translateY(110px);opacity:0;transition:.25s
+}
+.toast.show{transform:none;opacity:1}
+.page-kicker{padding-top:50px}
+@media(max-width:900px){
+  .missions{grid-template-columns:1fr 1fr}.grid3,.learn-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:720px){
+  .hero{grid-template-columns:1fr;min-height:auto;padding-top:50px}.moon{width:63vw;max-width:280px}
+  .navin{flex-wrap:wrap}.navlinks{order:3;width:100%;display:flex;justify-content:center}.sectionhead{display:block}.sectionhead p{margin-top:9px}.dropdown{left:0;transform:translateY(-5px)}.navgroup:hover .dropdown,.navgroup:focus-within .dropdown{transform:translateY(0)}
+  .missions,.grid3,.learn-grid,.answers{grid-template-columns:1fr}
+  .memory-grid{grid-template-columns:1fr 1fr}
+  .tree{grid-template-columns:1fr 1fr;grid-template-areas:"father mother" "prophet prophet" "wife wife" "c1 c2" "c3 c4" "c5 c6" "c7 c7"}
+  .score-pill{font-size:.76rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap navin">
+    <div class="brand">Jejak <span>Rasulullah ﷺ</span></div>
+    <div class="navlinks">
+      <button data-pagebtn="intro" onclick="showPage('intro')">Intro</button>
+      <div class="navgroup">
+        <button class="journey-btn" data-navgroup="journey" onclick="showPage('personality')">Journey</button>
+        <div class="dropdown">
+          <button data-pagebtn="personality" onclick="showPage('personality')">Personality of Rasulullah ﷺ</button>
+          <button data-pagebtn="family" onclick="showPage('family')">Family of Rasulullah ﷺ</button>
+          <button data-pagebtn="sunnah" onclick="showPage('sunnah')">Sunnah of Rasulullah ﷺ</button>
+        </div>
+      </div>
+      <button data-pagebtn="learning" onclick="showPage('learning')">Learn More</button>
+    </div>
+    <div class="score-pill">⭐ <span id="navStars">0</span> Stars</div>
+  </div>
+</nav>
+
+<main>
+
+<!-- PAGE 1 -->
+<div class="page active" id="page-intro">
+  <header class="wrap hero">
+    <div>
+      <div class="eyebrow">Maulidur Rasul • Interactive Learning Journey</div>
+      <h1>Discovering<br>Rasulullah ﷺ <small>A Maulidur Rasul Learning Experience</small></h1>
+      <p class="lead">
+        Explore the beautiful character, family and Sunnah of Prophet Muhammad ﷺ through interactive activities.
+        Learn at your own pace, collect Stars of Knowledge, and discover lessons that can be carried into everyday life.
+      </p>
+      <div class="quote">“And you are truly a man of outstanding character.”<small>Qur’an 68:4</small></div>
+      <div class="btnrow">
+        <button class="btn primary" onclick="showPage('personality')">Start Exploring ✦</button>
+        <button class="btn ghost" onclick="resetJourney()">Reset Progress</button>
+      </div>
+    </div>
+    <div class="moon"></div>
+  </header>
+
+  <section>
+    <div class="wrap">
+      <div class="sectionhead">
+        <h2>What will you discover?</h2>
+        <p>Explore three interactive learning activities about the personality, family and Sunnah of Rasulullah ﷺ, then bring everything together in the final learning section.</p>
+      </div>
+      <div class="missions">
+        <article class="mission"><div class="n">INTRO</div><h3>🌙 Welcome</h3><p>Begin with a short introduction to Maulidur Rasul and the purpose of learning about Rasulullah ﷺ.</p></article>
+        <article class="mission"><div class="n">JOURNEY 01</div><h3>💎 Personality of Rasulullah ﷺ</h3><p>Discover qualities such as trustworthiness, mercy, generosity, courage and beautiful manners.</p></article>
+        <article class="mission"><div class="n">JOURNEY 02</div><h3>🌴 Family of Rasulullah ﷺ</h3><p>Learn key family relationships by completing an interactive family tree.</p></article>
+        <article class="mission"><div class="n">JOURNEY 03</div><h3>⭐ Sunnah of Rasulullah ﷺ</h3><p>Learn everyday Sunnah through a study-and-match memory card activity.</p></article>
+        <article class="mission"><div class="n">LEARN MORE</div><h3>🏮 Continue Learning</h3><p>Review what you discovered, explore the benefits of Sunnah and choose one lesson to practise.</p></article>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="page-personality">
+  <section class="page-kicker">
+    <div class="wrap">
+      <div class="sectionhead">
+        <h2>Game 1 — Personality of Rasulullah ﷺ</h2>
+        <p>Read each situation and identify the quality that best reflects the character of Rasulullah ﷺ.</p>
+      </div>
+      <div class="panel">
+        <div class="status">
+          <span class="pill">💎 Question <b id="pnum">1</b>/<span id="ptotal"></span></span>
+          <span class="pill">Correct: <b id="pscore">0</b></span>
+        </div>
+        <div class="progress"><span id="pprogress"></span></div>
+        <div class="eyebrow" style="margin-top:24px">What quality does this show?</div>
+        <div id="scenario" class="scenario"></div>
+        <div id="panswers" class="answers"></div>
+        <div id="pfeedback" class="feedback"></div>
+        <button id="pnext" class="btn primary hidden" onclick="nextPersonality()">Next →</button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sectionhead"><h2>Learn About the Personality of Rasulullah ﷺ</h2><p>Explore the qualities highlighted in the activity and the lessons they offer for our own character.</p></div>
+      <div class="grid3">
+        <article class="card"><div class="icon">🤝</div><h3>Trustworthy</h3><p>He was known for honesty and integrity and was called al-Amīn, “the Trustworthy.”</p><span class="source">Seerah summary</span></article>
+        <article class="card"><div class="icon">🫶</div><h3>Merciful</h3><p>The Qur’an describes his mission as a mercy to the worlds.</p><span class="source">Qur’an 21:107</span></article>
+        <article class="card"><div class="icon">🎁</div><h3>Generous</h3><p>Anas reported that Rasulullah ﷺ was among the most generous of people.</p><span class="source">Sahih al-Bukhari 6033</span></article>
+        <article class="card"><div class="icon">🛡️</div><h3>Brave</h3><p>He showed courage and reassured others during moments of fear.</p><span class="source">Sahih al-Bukhari 6033</span></article>
+        <article class="card"><div class="icon">🌿</div><h3>Good manners</h3><p>He taught the importance of beautiful character and avoided offensive speech.</p><span class="source">Sahih al-Bukhari 3559</span></article>
+        <article class="card"><div class="icon">💫</div><h3>Outstanding character</h3><p>The Qur’an directly praises Rasulullah ﷺ for outstanding moral character.</p><span class="source">Qur’an 68:4</span></article>
+      </div>
+      <div class="nextbar"><button class="btn ghost" onclick="showPage('intro')">← Intro</button><button class="btn primary" onclick="showPage('family')">Continue to the Family of Rasulullah ﷺ →</button></div>
+    </div>
+  </section>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="page-family">
+  <section class="page-kicker">
+    <div class="wrap">
+      <div class="sectionhead">
+        <h2>Game 2 — Family of Rasulullah ﷺ</h2>
+        <p>Select a name from the bank, then place it into the correct relationship slot in the family tree.</p>
+      </div>
+      <div class="panel">
+        <div class="status">
+          <span class="pill">🌴 Placements: <b id="fscore">0</b>/10</span>
+          <span class="pill">Selected: <b id="selectedName">None</b></span>
+        </div>
+        <p class="help">The seven child slots accept the children in any order. This family tree introduces the parents of Rasulullah ﷺ, his first wife Khadijah (ra), and his seven children.</p>
+        <div class="tree">
+          <div id="father" class="slot empty" data-role="Father" data-kind="father" onclick="placeName(this)">?</div>
+          <div id="mother" class="slot empty" data-role="Mother" data-kind="mother" onclick="placeName(this)">?</div>
+          <div id="prophet" class="slot center" data-role="Center">Prophet Muhammad ﷺ</div>
+          <div id="wife" class="slot empty" data-role="First Wife" data-kind="wife" onclick="placeName(this)">?</div>
+          <div id="child0" class="slot empty" data-role="Child" data-kind="child" onclick="placeName(this)">?</div>
+          <div id="child1" class="slot empty" data-role="Child" data-kind="child" onclick="placeName(this)">?</div>
+          <div id="child2" class="slot empty" data-role="Child" data-kind="child" onclick="placeName(this)">?</div>
+          <div id="child3" class="slot empty" data-role="Child" data-kind="child" onclick="placeName(this)">?</div>
+          <div id="child4" class="slot empty" data-role="Child" data-kind="child" onclick="placeName(this)">?</div>
+          <div id="child5" class="slot empty" data-role="Child" data-kind="child" onclick="placeName(this)">?</div>
+          <div id="child6" class="slot empty" data-role="Child" data-kind="child" onclick="placeName(this)">?</div>
+        </div>
+        <div class="eyebrow" style="margin-top:25px">Name Bank</div>
+        <div class="namebank" id="namebank"></div>
+        <div class="feedback" id="familyFeedback">Choose a name, then click its correct place on the tree.</div>
+      </div>
+      <div class="nextbar"><button class="btn ghost" onclick="showPage('personality')">← Personality of Rasulullah ﷺ</button><button class="btn primary" onclick="showPage('sunnah')">Continue to the Sunnah of Rasulullah ﷺ →</button></div>
+    </div>
+  </section>
+</div>
+
+<!-- PAGE 4 -->
+<div class="page" id="page-sunnah">
+  <section class="page-kicker">
+    <div class="wrap">
+      <div class="sectionhead">
+        <h2>Game 3 — Sunnah of Rasulullah ﷺ</h2>
+        <p>First, study all the cards while they are face-up. Then start the game and match each Sunnah with its meaning.</p>
+      </div>
+      <div class="panel">
+        <div class="preview"><strong>👀 Study Phase:</strong> All cards are shown first. Memorise the words and their positions. Press <strong>Start Memory Game</strong> when ready.</div>
+        <div class="status">
+          <span class="pill">⭐ Pairs: <b id="mfound">0</b>/6</span>
+          <span class="pill">Mode: <b id="phase">Study the cards</b></span>
+        </div>
+        <div id="memory" class="memory-grid"></div>
+        <div class="btnrow">
+          <button id="startMemory" class="btn primary" onclick="beginMemory()">Start Memory Game ✦</button>
+          <button id="studyAgain" class="btn ghost hidden" onclick="studyAgain()">Study Again for 5 Seconds</button>
+        </div>
+        <div class="feedback" id="mfeedback">Try to remember where each Sunnah and its meaning are located.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sectionhead"><h2>Sunnah in Daily Life</h2><p>Explore how simple Sunnah can nurture remembrance, gratitude, good manners, kindness and care for others.</p></div>
+      <div class="learn-grid">
+        <article class="card"><div class="icon">🍽️</div><h3>Say Bismillah</h3><p>Begin an everyday action by remembering Allah.</p><span class="source">Sahih al-Bukhari 5376</span></article>
+        <article class="card"><div class="icon">🤲</div><h3>Eat with the right hand</h3><p>Practise the eating etiquette directly taught by Rasulullah ﷺ.</p><span class="source">Sahih al-Bukhari 5376</span></article>
+        <article class="card"><div class="icon">😊</div><h3>Smile kindly</h3><p>Small acts of goodness can make interactions warmer and more respectful.</p></article>
+        <article class="card"><div class="icon">🧹</div><h3>Remove harm</h3><p>Care for shared spaces and help protect other people.</p></article>
+        <article class="card"><div class="icon">🌙</div><h3>Bedtime remembrance</h3><p>Give spiritual meaning to an ordinary daily routine.</p></article>
+        <article class="card"><div class="icon">💛</div><h3>Good character</h3><p>Sunnah also includes beautiful manners and treatment of others.</p><span class="source">Qur’an 68:4</span></article>
+      </div>
+      <div class="nextbar"><button class="btn ghost" onclick="showPage('family')">← Family of Rasulullah ﷺ</button><button class="btn primary" onclick="showPage('learning')">Continue to Learn More →</button></div>
+    </div>
+  </section>
+</div>
+
+<!-- PAGE 5 -->
+<div class="page" id="page-learning">
+  <section class="page-kicker">
+    <div class="wrap">
+      <div class="sectionhead">
+        <h2>Learn More — Bringing the Lessons Together</h2>
+        <p>Reflect on what you discovered about Rasulullah ﷺ and choose one simple Sunnah or good habit to carry into your daily life.</p>
+      </div>
+      <div class="panel bigscore">
+        <div class="eyebrow">Your Learning Score</div>
+        <div class="number" id="finalStars">0</div>
+        <div>Stars of Knowledge ✦</div>
+        <div class="badges" id="badges"></div>
+        <div class="btnrow" style="justify-content:center">
+          <button class="btn ghost" onclick="resetJourney()">Restart Activities</button>
+          <button class="btn primary" onclick="showPage('intro')">Return to Intro</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sectionhead"><h2>What did we learn?</h2><p>Three themes, one purpose: know Rasulullah ﷺ better and turn knowledge into better character and habits.</p></div>
+      <div class="learn-grid">
+        <article class="card"><div class="icon">💎</div><h3>Personality of Rasulullah ﷺ</h3><p>Trustworthiness, mercy, generosity, courage, good manners and outstanding character.</p></article>
+        <article class="card"><div class="icon">🌴</div><h3>Family of Rasulullah ﷺ</h3><p>Parents, first wife Khadijah (ra), and the seven children in a simplified family tree.</p></article>
+        <article class="card"><div class="icon">⭐</div><h3>Sunnah of Rasulullah ﷺ</h3><p>Simple daily actions that encourage remembrance, discipline, kindness and care for others.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sectionhead"><h2>Benefits of Sunnah</h2><p>Keep these simple and practical so players understand how Sunnah can influence daily life.</p></div>
+      <div class="learn-grid">
+        <article class="card"><div class="icon">🧠</div><h3>Remembrance</h3><p>Actions such as saying Bismillah help us remember Allah during ordinary routines.</p></article>
+        <article class="card"><div class="icon">🙏</div><h3>Gratitude</h3><p>Daily routines become opportunities to recognise blessings instead of acting automatically.</p></article>
+        <article class="card"><div class="icon">🤝</div><h3>Better manners</h3><p>Prophetic etiquette encourages respectful behaviour toward family, friends and community.</p></article>
+        <article class="card"><div class="icon">💗</div><h3>Kindness</h3><p>Helping, smiling and speaking well make good character visible in everyday life.</p></article>
+        <article class="card"><div class="icon">🧭</div><h3>Consistency</h3><p>Small repeated actions can build discipline and intentional habits.</p></article>
+        <article class="card"><div class="icon">🌍</div><h3>Care for others</h3><p>Helping people and removing harm show responsibility toward the community.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="panel">
+        <div class="eyebrow">Final Sunnah Challenge</div>
+        <h2 style="font-size:clamp(2rem,4vw,3rem);margin:.3em 0">Choose one action for today ✨</h2>
+        <div class="answers">
+          <button class="answer" onclick="chooseChallenge(this,'Say Bismillah mindfully before your next meal.')">🍽️ Remember Bismillah</button>
+          <button class="answer" onclick="chooseChallenge(this,'Smile and greet three people sincerely today.')">😊 Smile & greet</button>
+          <button class="answer" onclick="chooseChallenge(this,'Remove one small inconvenience or harmful thing for someone else.')">🧹 Help someone</button>
+          <button class="answer" onclick="chooseChallenge(this,'Practise one piece of good eating etiquette at your next meal.')">🤲 Practise eating adab</button>
+        </div>
+        <div class="feedback" id="challengeText">Choose a challenge to complete your journey.</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+</main>
+
+<footer class="wrap">
+  <strong>Maulidur Rasul Interactive Learning Journey</strong>
+  <p>This prototype avoids visual depiction of Prophet Muhammad ﷺ and uses symbolic imagery such as stars, dunes, moonlight and lanterns. Religious wording and references should be checked by your lecturer or a qualified ustaz/ustazah before formal publication.</p>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let stars = 0;
+let done = {personality:false,family:false,sunnah:false};
+
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(window.__toast);
+  window.__toast=setTimeout(()=>t.classList.remove('show'),1800);
+}
+function updateStars(){
+  document.getElementById('navStars').textContent=stars;
+  document.getElementById('finalStars').textContent=stars;
+}
+function addStars(n){stars+=n;updateStars()}
+function showPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  document.querySelectorAll('[data-pagebtn]').forEach(b=>b.classList.toggle('active',b.dataset.pagebtn===name));
+  const journeyBtn=document.querySelector('[data-navgroup="journey"]');
+  if(journeyBtn) journeyBtn.classList.toggle('active',['personality','family','sunnah'].includes(name));
+  if(name==='learning')renderBadges();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function resetJourney(){
+  stars=0;done={personality:false,family:false,sunnah:false};updateStars();
+  resetPersonality();resetFamily();resetMemory();
+  toast('Journey restarted ✦');
+}
+
+/* GAME 1 */
+const PQ=[
+ {s:"People in Makkah trusted him because of his honesty and integrity.",o:["Trustworthy","Careless","Proud","Impatient"],c:0,e:"This connects to al-Amīn — the Trustworthy."},
+ {s:"The Qur’an describes his mission as a mercy to the worlds.",o:["Merciful","Harsh","Forgetful","Wasteful"],c:0,e:"Mercy is highlighted in Qur’an 21:107."},
+ {s:"During a frightening moment in Madinah, he went ahead to investigate and reassured the people.",o:["Brave","Jealous","Lazy","Uncertain"],c:0,e:"This illustrates courage and reassurance."},
+ {s:"Anas described him as among the most generous of people.",o:["Generous","Selfish","Extravagant","Unconcerned"],c:0,e:"Generosity is explicitly mentioned in hadith."},
+ {s:"He avoided offensive speech and taught that the best people have the best character.",o:["Good manners","Arrogance","Anger","Silence only"],c:0,e:"Good manners and character are central to the Prophetic example."},
+ {s:"Allah directly praises him in the Qur’an as being upon outstanding moral character.",o:["Outstanding character","Worldly status","Physical strength only","Wealth"],c:0,e:"This is the theme of Qur’an 68:4."}
+];
+let pi=0,ps=0,plock=false;
+document.getElementById('ptotal').textContent=PQ.length;
+function renderP(){
+  plock=false;
+  document.getElementById('pnum').textContent=pi+1;
+  document.getElementById('pscore').textContent=ps;
+  document.getElementById('pprogress').style.width=(pi/PQ.length*100)+'%';
+  document.getElementById('scenario').textContent=PQ[pi].s;
+  document.getElementById('pfeedback').textContent='';
+  document.getElementById('pnext').classList.add('hidden');
+  const root=document.getElementById('panswers');root.innerHTML='';
+  PQ[pi].o.forEach((txt,i)=>{
+    const b=document.createElement('button');
+    b.className='answer';b.textContent=txt;b.onclick=()=>pickP(i,b);root.appendChild(b);
+  });
+}
+function pickP(i,b){
+  if(plock)return;plock=true;
+  const q=PQ[pi], bs=[...document.querySelectorAll('#panswers .answer')];
+  bs[q.c].classList.add('correct');
+  if(i!==q.c)b.classList.add('wrong');
+  else{ps++;document.getElementById('pscore').textContent=ps;addStars(3);toast('Correct! +3 Stars ✦')}
+  document.getElementById('pfeedback').textContent=q.e;
+  document.getElementById('pnext').classList.remove('hidden');
+}
+function nextPersonality(){
+  if(pi<PQ.length-1){pi++;renderP()}
+  else{
+    done.personality=true;
+    document.getElementById('pprogress').style.width='100%';
+    document.getElementById('scenario').textContent=`Personality activity complete — ${ps}/${PQ.length}`;
+    document.getElementById('panswers').innerHTML='';
+    document.getElementById('pfeedback').textContent='You have completed the Personality of Rasulullah ﷺ activity. Continue to learn about his family.';
+    document.getElementById('pnext').classList.add('hidden');
+  }
+}
+function resetPersonality(){pi=0;ps=0;renderP()}
+
+/* GAME 2 */
+const FN=[
+ {n:"Abdullah ibn Abdul-Muttalib",k:"father"},
+ {n:"Aminah bint Wahb",k:"mother"},
+ {n:"Khadijah bint Khuwaylid",k:"wife"},
+ {n:"al-Qasim",k:"child"},{n:"Zaynab",k:"child"},{n:"Ruqayyah",k:"child"},
+ {n:"Umm Kulthum",k:"child"},{n:"Fatimah",k:"child"},{n:"Abdullah",k:"child"},{n:"Ibrahim",k:"child"}
+];
+let selected=null,fc=0;
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function renderBank(){
+  const bank=document.getElementById('namebank');bank.innerHTML='';
+  shuffle(FN).forEach(x=>{
+    const b=document.createElement('button');
+    b.className='namechip';b.textContent=x.n;b.dataset.name=x.n;b.dataset.kind=x.k;
+    b.onclick=()=>selectName(b);bank.appendChild(b);
+  });
+}
+function selectName(b){
+  if(b.classList.contains('used'))return;
+  document.querySelectorAll('.namechip').forEach(x=>x.classList.remove('selected'));
+  b.classList.add('selected');selected=b;
+  document.getElementById('selectedName').textContent=b.dataset.name;
+}
+function placeName(slot){
+  if(!selected){toast('Choose a name first.');return}
+  if(!slot.classList.contains('empty'))return;
+  if(selected.dataset.kind===slot.dataset.kind){
+    slot.textContent=selected.dataset.name;slot.classList.remove('empty');slot.classList.add('filled');
+    selected.classList.add('used');selected.classList.remove('selected');
+    selected=null;fc++;document.getElementById('fscore').textContent=fc;document.getElementById('selectedName').textContent='None';
+    document.getElementById('familyFeedback').textContent='Correct placement! ✦';
+    addStars(2);toast('Family link found! +2 Stars');
+    if(fc===10){done.family=true;document.getElementById('familyFeedback').textContent='MashaAllah! You have completed the Family of Rasulullah ﷺ activity.'}
+  }else{
+    slot.classList.add('wrongflash');
+    document.getElementById('familyFeedback').textContent='Not this relationship. Try another place.';
+    setTimeout(()=>slot.classList.remove('wrongflash'),550);
+  }
+}
+function resetFamily(){
+  selected=null;fc=0;
+  document.getElementById('fscore').textContent='0';
+  document.getElementById('selectedName').textContent='None';
+  document.querySelectorAll('.slot[data-kind]').forEach(s=>{s.textContent='?';s.classList.remove('filled','wrongflash');s.classList.add('empty')});
+  renderBank();
+}
+
+/* GAME 3 */
+const MP=[
+ ["Say Bismillah before eating","Begin the meal by remembering Allah"],
+ ["Eat with the right hand","Follow the Prophet’s ﷺ eating etiquette"],
+ ["Eat from what is nearest","Use good manners when sharing a dish"],
+ ["Smile kindly","Turn a simple interaction into goodness"],
+ ["Remove harm from the way","Protect and help other people"],
+ ["Remember Allah at bedtime","End the day with remembrance"]
+];
+let deck=[],first=null,second=null,mlock=false,matches=0,started=false;
+function buildDeck(){
+  deck=shuffle(MP.flatMap((p,i)=>[{id:i,t:p[0]},{id:i,t:p[1]}]));
+  const root=document.getElementById('memory');root.innerHTML='';
+  deck.forEach(c=>{
+    const b=document.createElement('button');
+    b.className='memory-card';b.textContent=c.t;b.dataset.id=c.id;
+    b.onclick=()=>flipM(b);root.appendChild(b);
+  });
+}
+function beginMemory(){
+  if(started)return;
+  started=true;
+  document.getElementById('phase').textContent='Memory mode';
+  document.getElementById('startMemory').classList.add('hidden');
+  document.getElementById('studyAgain').classList.remove('hidden');
+  document.querySelectorAll('.memory-card').forEach(b=>b.classList.add('covered'));
+  document.getElementById('mfeedback').textContent='Cards hidden! Match each Sunnah with its meaning.';
+  toast('Sunnah memory game started ✦');
+}
+function studyAgain(){
+  if(!started)return;
+  const btn=document.getElementById('studyAgain');btn.disabled=true;
+  document.getElementById('phase').textContent='5-second peek';
+  document.querySelectorAll('.memory-card:not(.matched)').forEach(b=>b.classList.remove('covered'));
+  setTimeout(()=>{
+    document.querySelectorAll('.memory-card:not(.matched)').forEach(b=>b.classList.add('covered'));
+    document.getElementById('phase').textContent='Memory mode';
+    btn.disabled=false;
+  },5000);
+}
+function flipM(b){
+  if(!started||mlock||b.classList.contains('matched')||!b.classList.contains('covered'))return;
+  b.classList.remove('covered');
+  if(!first){first=b;return}
+  second=b;mlock=true;
+  if(first.dataset.id===second.dataset.id){
+    setTimeout(()=>{
+      first.classList.add('matched');second.classList.add('matched');
+      first=null;second=null;mlock=false;matches++;
+      document.getElementById('mfound').textContent=matches;addStars(3);toast('Sunnah pair matched! +3 Stars');
+      if(matches===6){done.sunnah=true;document.getElementById('phase').textContent='Complete ✨';document.getElementById('mfeedback').textContent='MashaAllah! All Sunnah pairs matched.'}
+    },320);
+  }else{
+    setTimeout(()=>{first.classList.add('covered');second.classList.add('covered');first=null;second=null;mlock=false},720);
+  }
+}
+function resetMemory(){
+  first=second=null;mlock=false;matches=0;started=false;
+  document.getElementById('mfound').textContent='0';
+  document.getElementById('phase').textContent='Study the cards';
+  document.getElementById('startMemory').classList.remove('hidden');
+  document.getElementById('studyAgain').classList.add('hidden');
+  document.getElementById('mfeedback').textContent='Try to remember where each Sunnah and its meaning are located.';
+  buildDeck();
+}
+
+function renderBadges(){
+  document.getElementById('finalStars').textContent=stars;
+  let b=[];
+  if(done.personality)b.push('💎 Character Explorer');
+  if(done.family)b.push('🌴 Family Tree Keeper');
+  if(done.sunnah)b.push('⭐ Sunnah Star');
+  if(done.personality&&done.family&&done.sunnah)b.push('🏮 Journey Complete');
+  if(!b.length)b=['🌙 Complete games to unlock badges'];
+  document.getElementById('badges').innerHTML=b.map(x=>`<span class="badge">${x}</span>`).join('');
+}
+function chooseChallenge(el,text){
+  document.querySelectorAll('#page-learning .answer').forEach(x=>x.classList.remove('correct'));
+  el.classList.add('correct');
+  document.getElementById('challengeText').textContent='Your challenge: '+text+' May this knowledge become beneficial action.';
+  toast('Challenge selected ✨');
+}
+
+renderP();
+resetFamily();
+resetMemory();
+updateStars();
+showPage('intro');
+</script>
+</body>
+</html>
